@@ -1,6 +1,6 @@
 "use client";
 import { Table } from '@tanstack/react-table'; // Add this import
-import { Printer, FileSpreadsheet, laptop } from 'lucide-react';
+import { Printer, FileSpreadsheet } from 'lucide-react'; //laptop
 
 import React from 'react';
 import { 
@@ -12,6 +12,9 @@ import { saveAs } from 'file-saver';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+
+import 'jspdf-autotable'; // <--- FIX#240326P1015: Critical plugin attachment
+import autoTable from 'jspdf-autotable';
 
 interface ExportProps<TData> {
   data: TData[];
@@ -44,34 +47,169 @@ export const ExportControls = <TData,>({
   };
 
   const exportToPDF = () => {
-    const doc = new jsPDF();
-    const sourceData = prepareData();
-    const tableColumn = Object.keys(sourceData[0]);
-    const tableRows = sourceData.map(obj => Object.values(obj));
+    // 1. Initialize jsPDF (p = portrait, pt = points, a4 = paper size)
+    const doc = new jsPDF('p', 'pt', 'a4');
 
-    (doc as any).autoTable({
-      head: [tableColumn],
+    // 2. Prepare Columns & Rows
+    const visibleColumns = table.getVisibleLeafColumns()
+      .filter(col => col.id !== 'select' && col.id !== 'actions');
+      
+    const tableHeaders = visibleColumns.map(col => 
+      String(col.columnDef.header || col.id)
+    );
+    
+    const tableRows = data.map(row => 
+      visibleColumns.map(col => {
+        const value = (row as any)[col.id];
+        return value === null || value === undefined ? '' : String(value);
+      })
+    );
+
+    // 3. THE FIX: Using the function directly with explicit options
+    const options: UserOptions = {
+      head: [tableHeaders],
       body: tableRows,
+      startY: 40,
       theme: 'striped',
-      headStyles: { fillColor: [37, 99, 235] } // Tailwind blue-600
-    });
-    doc.save(`${fileName}.pdf`);
+      headStyles: { fillColor: [30, 41, 59] }, // Slate-800 "Cool & Calm"
+      styles: { fontSize: 8, cellPadding: 3 },
+    };
+
+    // Call the imported function passing the doc instance
+    autoTable(doc, options);
+
+    doc.save(`export_${new Date().getTime()}.pdf`);
   };
 
+  const exportToPDFWithHeader = () => {
+  // 1. Initialize jsPDF (Points 'pt', A4 size)
+  const doc = new jsPDF('p', 'pt', 'a4');
+  const pageWidth = doc.internal.pageSize.getWidth();
+
+  // 2. BRANDING & HEADER SECTION
+  // Set Title
+  doc.setFontSize(20);
+  doc.setTextColor(30, 41, 59); // Slate-800
+  doc.text("User Management Report", 40, 50);
+
+  // Set Metadata (Date/Time)
+  doc.setFontSize(10);
+  doc.setTextColor(100, 116, 139); // Slate-500
+  const reportDate = new Date().toLocaleString();
+  doc.text(`Generated on: ${reportDate}`, 40, 65);
+
+  // Draw a horizontal divider line
+  doc.setDrawColor(226, 232, 240); // Slate-200
+  doc.line(40, 75, pageWidth - 40, 75);
+
+  // 3. PREPARE TABLE DATA (TanStack Integration)
+  const visibleColumns = table.getVisibleLeafColumns()
+    .filter(col => col.id !== 'select' && col.id !== 'actions');
+    
+  const tableHeaders = visibleColumns.map(col => 
+    String(col.columnDef.header || col.id)
+  );
+  
+  const tableRows = data.map(row => 
+    visibleColumns.map(col => {
+      const value = (row as any)[col.id];
+      return value === null || value === undefined ? '' : String(value);
+    })
+  );
+
+  // 4. GENERATE TABLE (Starting below the header)
+  autoTable(doc, {
+    head: [tableHeaders],
+    body: tableRows,
+    startY: 95, // Positioned after the header/line
+    theme: 'striped',
+    headStyles: { 
+      fillColor: [59, 130, 246], // Primary Blue-500 for a fresh look
+      textColor: [255, 255, 255],
+      fontSize: 10,
+      fontStyle: 'bold'
+    },
+    styles: { 
+      fontSize: 9, 
+      cellPadding: 6,
+      lineColor: [241, 245, 249],
+      lineWidth: 0.1
+    },
+    alternateRowStyles: {
+      fillColor: [248, 250, 252] // Very light slate for "Cool & Calm"
+    },
+    // Add Page Numbers
+    didDrawPage: (data) => {
+      doc.setFontSize(8);
+      doc.setTextColor(148, 163, 184);
+      doc.text(
+        `Page ${data.pageNumber}`,
+        pageWidth - 60,
+        doc.internal.pageSize.getHeight() - 20
+      );
+    }
+  });
+
+  doc.save(`User_Report_${new Date().getTime()}.pdf`);
+};
+
   const exportToCSV = () => {
-    const sourceData = prepareData();
-    const headers = Object.keys(sourceData[0]).join(",");
-    const rows = sourceData.map(obj => Object.values(obj).join(",")).join("\n");
+    const sourceData = prepareData().length > 0 ? prepareData() : [];
+    const headers = Object.keys(sourceData[0] as object).join(",");
+    const rows = sourceData.map(obj => Object.values(obj as object).join(",")).join("\n");
     const blob = new Blob([`${headers}\n${rows}`], { type: 'text/csv;charset=utf-8;' });
     saveAs(blob, `${fileName}.csv`);
   };
 
+  {/* NOT in USE . but working fine*/}
+const downloadCSV = () => {
+    // 1. Get ONLY the visible columns from TanStack state
+    const visibleColumns = table.getVisibleLeafColumns();
+    
+    // 2. Create Header Row (CSV Column Names)
+    const headers = visibleColumns
+      .map(col => col.id || (col.columnDef.header as string))
+      .filter(header => header !== 'select' && header !== 'actions'); // Skip UI-only columns
+
+    // 3. Create Data Rows
+    const csvRows = data.map(row => {
+      return headers.map(header => {
+        // Find the column that matches this header
+        const column = visibleColumns.find(col => col.id === header || col.columnDef.header === header);
+        if (!column) return '';
+        
+        // Extract value (handling nested objects if necessary)
+        const value = (row as any)[column.id];
+        const stringValue = value === null || value === undefined ? '' : String(value);
+        
+        // Escape quotes for CSV safety
+        return `"${stringValue.replace(/"/g, '""')}"`;
+      }).join(',');
+    });
+
+    // 4. Combine Headers and Rows
+    const csvString = [headers.join(','), ...csvRows].join('\n');
+
+    // 5. Trigger Browser Download
+    const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    
+    const timestamp = new Date().toISOString().split('T')[0];
+    link.setAttribute('href', url);
+    link.setAttribute('download', `export_${timestamp}.csv`);
+    link.style.visibility = 'hidden';
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
   const exportToDocx = () => {
     // Standard Enterprise trick: HTML-based DOCX export
     const sourceData = prepareData();
-    const header = Object.keys(sourceData[0]).map(h => `<th style="border:1px solid black">${h}</th>`).join("");
+    const header = Object.keys(sourceData[0] as object).map(h => `<th style="border:1px solid black">${h}</th>`).join("");
     const rows = sourceData.map(row => 
-      `<tr>${Object.values(row).map(v => `<td style="border:1px solid black">${v}</td>`).join("")}</tr>`
+      `<tr>${Object.values(row as object).map(v => `<td style="border:1px solid black">${v}</td>`).join("")}</tr>`
     ).join("");
     
     const content = `<table style="border-collapse:collapse">${header}${rows}</table>`;
@@ -221,9 +359,19 @@ export const ExportControls = <TData,>({
           <DropdownItem onClick={exportToExcel} icon={<TableIcon size={16}/>} label="Microsoft Excel" ext=".xlsx" color="text-emerald-600" />
           <DropdownItem onClick={exportToCSV} icon={<FileCode size={16}/>} label="CSV UTF-8" ext=".csv" color="text-blue-500" />
           
+
+{/* Download CSV 
+        <DropdownItem 
+            onClick={downloadCSV}
+           icon={<FileCode size={16}/>} label="DownloadCSV UTF-8" ext=".csv" color="text-blue-500" />
+            
+*/}
+
+
           <div className="h-px bg-slate-100 my-2" />
           <div className="px-2 py-1.5 text-xs font-bold text-slate-400 uppercase tracking-wider">Documents</div>
           <DropdownItem onClick={exportToPDF} icon={<FileText size={16}/>} label="PDF Document" ext=".pdf" color="text-rose-500" />
+          <DropdownItem onClick={exportToPDFWithHeader} icon={<FileText size={16}/>} label="Header PDF Document" ext=".pdf" color="text-rose-500" />
           <DropdownItem onClick={exportToDocx} icon={<FileStack size={16}/>} label="Word Document" ext=".doc" color="text-indigo-600" />
           
           <div className="h-px bg-slate-100 my-2" />

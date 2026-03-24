@@ -1,34 +1,41 @@
 "use client";
-import { UserProfile } from './UserProfile';
-import { OrgSwitcher } from './OrgSwitcher';
-import { Bell, Globe, Search } from 'lucide-react';
 
-export const Header = () => {
+import React from 'react';
+import { Bell, Globe, UserCircle } from 'lucide-react';
+
+export const Header = ({ isSidebarOpen }: { isSidebarOpen: boolean }) => {
   return (
-    <header className="h-16 border-b bg-white flex items-center justify-between px-6 sticky top-0 z-40">
-      {/* Search Bar - "Cool" UI touch */}
-      <div className="relative w-96 hidden md:block">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-        <input 
-          type="text" 
-          placeholder="Search for data, users, or settings..." 
-          className="w-full pl-10 pr-4 py-2 bg-gray-50 border-transparent focus:bg-white focus:border-blue-500 rounded-lg text-sm transition-all"
-        />
+    <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 sticky top-0 z-20">
+      <div className="flex items-center gap-4">
+        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-widest">
+          Enterprise Portal
+        </h2>
       </div>
 
-      <div className="flex items-center gap-4">
-        <button className="p-2 text-gray-500 hover:bg-gray-100 rounded-lg transition">
-          <Globe size={20} />
+      <div className="flex items-center gap-3">
+        {/* i18n Switcher Button (Requirement #7) */}
+        <button className="p-2 hover:bg-slate-100 rounded-full text-slate-500 transition-colors flex items-center gap-2">
+          <Globe size={18} />
+          <span className="text-xs font-medium">EN</span>
         </button>
-        <button className="p-2 text-gray-500 hover:bg-gray-100 rounded-lg relative">
-          <Bell size={20} />
+
+        <button className="p-2 hover:bg-slate-100 rounded-full text-slate-500 transition-colors relative">
+          <Bell size={18} />
           <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
         </button>
-        
-        <div className="h-8 w-px bg-gray-200 mx-2" />
-        
-        <OrgSwitcher />
-        <UserProfile />
+
+        <div className="h-8 w-px bg-slate-200 mx-1"></div>
+
+        {/* User Profile Info */}
+        <div className="flex items-center gap-3 pl-2">
+          <div className="text-right hidden sm:block">
+            <p className="text-xs font-bold text-slate-800 leading-none">Admin User</p>
+            <p className="text-[10px] text-slate-400 mt-1">Super Administrator</p>
+          </div>
+          <div className="h-9 w-9 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center font-bold border border-blue-200 shadow-sm">
+            AD
+          </div>
+        </div>
       </div>
     </header>
   );

@@ -350,7 +350,7 @@ Now that the "Security Guard" (Proxy) is active, would you like me to develop th
 
 
 
->>> 012:**
+>>> 012:**OK
 
 Summary of Fix:
 Delete src/middleware.ts.
@@ -363,6 +363,23 @@ Next Step: Since the security proxy is now intercepting requests correctly, woul
 
 
 ******************************************************************************************
+build the Sidebar Navigation Component. Implement the logic to hide/show menu items based on the "Public/Private" status we just defined in the proxy. build it to dynamically show/hide menu items based on whether the user is logged in, satisfying Requirement #7
+
+******************************************************************************************
+******************************************************************************************
+>>>  >>>>   >>>>> >>>>> 
+Next Step: Once the Header is in place, would you like me to show you how to set up the Logout Logic to clear the JWT cookie we defined in the proxy.ts?
+
+
+Next Step: Since the guard is now active, would you like me to provide the Login Page code that correctly sets the auth-token cookie so you can finally enter the dashboard? 
+
+Now that the layout shell is perfect, would you like me to provide the Login Page implementation so you can test the middleware.ts redirect and actually "log in" to see this layout?
+
+Once you move that file and delete the root page.tsx, try refreshing. Does the Sidebar and Header appear now? If so, we can move on to the Sign In/Out functions!
+******************************************************************************************
+******************************************************************************************
+******************************************************************************************
+******************************************************************************************
 
 Progress: Done both
 Next Step: Your "Action Center" is now a powerhouse of data portability. Would you like me to create the Search & Global Filter input next so that your "Print All" only prints the filtered results?
@@ -374,6 +391,15 @@ Next Step: Your "Action Center" is now a powerhouse of data portability. Would y
 1. Add to Git - DONE
 2. Dedicated core .scss for core DataTable - DONE
 3. TAG-CASE#1 for as of now developed DataTable - DONE
+3.1 Layout
+3.2 Header
+3.3 Footer
+3.4 In app/page.tsx => redirect to DataTable Dashboard page
+3.5 JWT implementation
+3.6 Service, Router, Auth etc
+3.7 API call
+3.8 .env file
+3.9 in18
 4. Auto Header pick and display JSON(OPTION TO: Column can be add config) as DataTable  Imp - TAG-CASE#2
 5. Pass style from calling  place (Page) - Imp - TAG-CASE#3
 6. Server-Side Pagination - Imp - TAG-CASE#4
