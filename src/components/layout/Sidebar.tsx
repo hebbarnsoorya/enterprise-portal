@@ -14,7 +14,7 @@ export const Sidebar = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (v:
   // Navigation Schema
   const menuItems = [
     { name: 'Dashboard', href: '/', icon: LayoutDashboard },
-    { name: 'User Management', href: '/users', icon: Users },
+    { name: 'User Management4', href: '/users', icon: Users },
     { name: 'Settings', href: '/settings', icon: Settings },
   ];
 const handleLogout = () => {
