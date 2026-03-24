@@ -1,0 +1,383 @@
+Use React, TailwindCDD, .SCSS, NextJS, Typesript etc, and High quality/Standard/Reusability components/Best Practices.
+
+Develop as Senior Architect, Generate Family tree , Use a card(Small in size and don't use real photo, instead use default image or no image) to each member to show , his/her Stapsize photo, Name,DOB, Mobile, Address on the same.
+
+Esay to navigate upward / downward tree, option to choose She or He as reference to up/down travel. Use Dummy data withh scenario o cover.
+Start from React  installation, required tools setup and project configuration till end step-by-step
+
+I am expecting below points to be loaded in my app.
+#1. Parent row (Father and Monther 's Profile card show Side by side) 
+#2. Below to the Parenet row, next row show up all childrens profile card
+#3. If children married, show his/her Spouse beside of her/his Card and Follow #2
+#4.  Continuely  till last child's card
+#5. 2 separate radio button on Parents card, if I choose Father, it should travell thru all the Father's family and hierarchie and If mother it should show maother's familly, By Deault Father should be selected.
+#6. Travell thru all the  Father's family, means to say; Upward direction ... Father's Parants,  like...
+#7. Travell thru all the  Monther's family, means to say; Upward direction ... Mother's Parants like , 
+#8. In downward also should work same, which I selected to travel downward in that way/Family hierarchie it should show details
+#9. If i click on the Profile card it should show popup page withh all details, i any more required to handle /show i will add and update regarding the Person.
+
+Overall Userfriendly / Responively Page required
+
+
+******************************************************************************************
+
+family:{
+	id
+	fCode(Unique, Auto, NOT NULL)
+	name(NOT NULL)
+	ancestor
+	history
+}
+
+parenting:{
+	id
+	pCode(Unique, Auto, NOT NULL)
+	groom(mCode)//Both NOT NULL ; Any one might have null
+	bride(mCode)//Both NOT NULL ; Any one might have null
+	isAlive(Default 1)
+	start
+	end
+	iSPublicized(Default 1)
+	comments
+}
+
+Org_user_role_permission
+fcode_userCode_pCode
+userCode_eduCode_AddrCode_OccuCode_hobbiCode_InterCode_expertCode_experCode
+Person:{
+	id
+	userCode(Unique, Auto, NOT NULL)
+	(pCode)
+	(fCode)
+	firstName(NOT NULL, ONLY CHAR, NO Whitespace )
+	lastName
+	mobile
+	email
+	dob
+	gender(NOT NULL)
+	about
+	
+	presentRoutine(Profile Summary)
+	(
+	Education[]: Name, Institute, Begin, end, year of complete, isPresent, secured score/grade, out of score/grade, remarks
+	Address[]: addressLine1, addrssLine2, addressLine3(Landmark), city, state, country, region, postalCode, type[Residential, Office,  Communication, Transitional, care-of, Bussiness, Temporary residence/Stay ]
+	Occupations[]: Name, Institute/Orgs, Possition/Level, DateOfJoin, DateOfExit, isPresent, location, OrgsbelongsTo[MNC, Country Based, Country based MNC]
+	Hobbies[]: Name, Area, remarks
+	Interests[]: Name, Area, rankinglevel, remarks
+	Expertise[]: Name, Area, Level, rankinglevel, remarks
+	Experience[]: Name, Area, how long have you been using those skills, remarks
+	)
+	
+}
+
+TechStacks/Skills :| Redis | Kafka | LocalStorage | MongoDB | EHCache | AOP | OAuth2 - JWT Token | RBAC | DockerImage | Docker/K8s | CICD | 
+******************************************************************************************
+Develop as Senior Architect, Generate and Build React with NextJS, Typescript, RailwindCSS, .SCSS, LocalStorage, 
+Zod, Reducers, Routers, Filters, Session Management, Listeners,
+******************************************************************************************
+1. Role/Perm verify
+2. React App
+
+******************************************************************************************
+
+******************************************************************************************
+Create React APP, TailwindCDD, .SCSS, NextJS, Typesript etc, and High quality/Standard/Reusability components/Best Practices.
+
+User dummy data as inpud later will change to API end point call.
+
+Develop as Senior Architect Role, Generate Family tree , Use a card(Small in size and don't use real photo, instead use default image or no image) to each member to show , his/her Stapsize photo, Name,DOB, Mobile, Address on the same.
+
+
+>>>
+
+Would you like me to show you how to set up the API fetch call using TanStack Query for better caching and loading states?
+
+#Step-02::
+family:{
+	id
+	fCode(Unique, Auto, NOT NULL)
+	name(NOT NULL)
+	ancestor
+	history
+}
+
+parenting:{
+	id
+	pCode(Unique, Auto, NOT NULL)
+	groom(mCode)//Both NOT NULL ; Any one might have null
+	bride(mCode)//Both NOT NULL ; Any one might have null
+	isAlive(Default 1)
+	start
+	end
+	iSPublicized(Default 1)
+	comments
+}
+
+Member:{
+	id
+	mCode(Unique, Auto, NOT NULL)
+	(pCode)
+	(fCode)
+	firstName(NOT NULL, ONLY CHAR, NO Whitespace )
+	lastName
+	mobile
+	email
+	dob
+	gender(NOT NULL)
+	about
+	
+}
+
+This is my DB table structure.
+Wants to keep Parent Row with Two Member's Cards side by side and all Childrens should show on below row.
+Keep groom at left side and bride at right in the same row. If any more relations groom/bride other than current Spouse show one Arrow mark, once click on that should show thier respective Spouse.
+
+******************************************************************************************
+As Senior Architect role, Build React App using Typescript, nextJS, TailwindCSS, .SCSS . 
+
+Along with consider below points as well
+
+#1. Must be responsibly html, Use best practice code and design, Highly rich  UI , 
+
+#2. High standard enterprise application,, Typescript, Responsive HTML, TailwindCSS, 
+
+#3. Production standard, reusable components, Use Hooks, Service, Components very effectively, follow best practices.
+
+#4. Use effectively required Tools, Libraries, flexible to enhance new functions, easy to understand code for developers etc, 
+
+#5. use effectively listeners, filters, data mapping, Exceptional handler, routers etc
+
+#6. State Management, Routing,  etc include if necessary .
+
+#7. Suggest some more.....
+
+Layout with Header ; left log with Company name, Middle part for menus some of that dropdown and few of them single menu , last part in right with profile notification, alert i18n switch button, Preferences page menu item, options to switch Orgs , Role, etc
+
+Planning to implement login with JWT token security. there are few of the menus public and remainings are private and available only logged in user
+
+#8. User now dummy data. Later will convert it to real Data
+
+#9. Develop cool and cum application with highly standard
+
+
+
+Phase#01: Suggest me to setup React app from scratch, step-by-step guidelines with neccessery commands as well 
+
+
+
+Phase#02: develop core setup of UI like, layout, alignments , Dashboard, Home etc pages , configurations, etc
+
+
+
+Phase#3: I wanted to Look on ReactTable for all purpose, need to handle all scenarios. Should be consider below points as well.
+
+
+
+P#3.1: High production standard Develop React Table with Responsile HTML
+
+P#3.2: Pagination. Consider Reusable components, Configurable Column Header Sort, 
+
+P#3.3: Export Table as PDF, excel csv etc. 
+
+P#3.4: Option to each individual column visible/hide , 
+
+P#3.5: Add checkbox for each row at 1st column and at end column name as Action, with View/Delete/Edit option. 
+
+P#3.6: Pagination, rows per page. Use all possible tech stacks required to achieve standards, like Typescript, NodeJS, reuse code etc. 
+
+P#3.7:  Use Dummy JSON object instead of backend service call. 
+
+P#3.8: In the next stage will replace Dummy Service with Real RestFul API url.
+******************************************************************************************
+
+src/
+├── app/              # Next.js App Router (Routes & Pages)
+├── components/       # Shared UI (Buttons, Inputs, Modals)
+├── features/         # Logic-specific modules (Auth, Dashboard, Users)
+│   ├── auth/         # Components, hooks, services for Auth
+│   └── tables/       # High-level Table implementation
+├── hooks/            # Global reusable hooks
+├── services/         # API abstraction (Axios instances)
+├── store/            # Global state (Zustand)
+├── styles/           # Global SCSS and Tailwind layers
+├── types/            # Global TS Interfaces
+└── lib/              # Utils (formatting, constants)
+******************************************************************************************
+/////>>
+mkdir -p src/utils && touch src/utils/constants.ts
+
+mkdir -p src/utils src/components src/services && touch src/utils/constants.ts src/components/App.tsx src/services/api.ts
+
+mkdir -p src/utils
+touch src/utils/constants.ts
+<<<<<///
+
+
+For Development::
+mkdir -p  src/components src/services   src/utils src/features   src/features/auth src/features/tables src/hooks src/store src/styles src/types src/lib && touch src/utils/constants.ts   src/services/api.ts
+
+mkdir -p src/components/layout
+
+touch src/components/layout/Header.tsx
+
+mkdir -p  src/components/ui src/components/ui/DataTable && touch src/components/ui/DataTable/DataTable.tsx
+
+
+touch src/components/layout/OrgSwitcher.tsx 
+touch src/components/layout/UserProfile.tsx 
+
+mkdir -p src/components/layout/ui
+mkdir -p src/components/layout/ui/DataTable
+touch src/components/layout/ui/DataTable/DataTable.tsx
+
+touch src/components/ui/DataTable/Pagination.tsx
+touch src/components/ui/DataTable/ColumnVisibility.tsx
+touch src/components/ui/DataTable/ExportControls.tsx
+
+touch src/services/mockService.ts
+
+touch src/typestable.d.ts
+
+touch src/styles/globals.scss
+touch src/styles/table.scss
+
+
+
+
+
+******************************************************************************************>>
+>>>> 001: Done
+Next Step: Would you like me to provide the complete SCSS styling for the table and the detailed logic for the Export to Excel/PDF functionality?
+
+
+>>> 002:Done*
+Final Summary of Fixes:
+Strict Typing: Added DataTableProps<TData> and ColumnDef to fix binding errors.
+
+Modularization: Separated header actions and pagination into their own files.
+
+Mocking: fetchMockData simulates a real async service.
+
+Next Step: Would you like me to create the User Management Page where we combine the mockService and DataTable together to see it in action?
+
+
+
+>>>> 003: **
+Next Step: This setup is now fully modular and error-free. Would you like me to help you implement the JWT Login Logic with the private/public route protection?
+
+
+>>> 004: **
+Next Step: Once your page loads correctly, would you like me to show you how to wrap this in the Main Layout with the Sidebar and Header we planned?
+
+
+>>>> 005:: **
+
+4. Senior Architect's Checklist for this Phase:
+Performance: The export logic runs on the client side. For massive datasets (>10,000 rows), you should move this to a Web Worker or a backend Service. For current dummy data, this is perfectly high-standard.
+
+Accessibility: Using @radix-ui ensures that users with screen readers or those using keyboards can navigate your export menu.
+
+FileSaver Utility: Using file-saver ensures cross-browser compatibility for file downloads, especially on older versions of Safari and mobile browsers.
+
+Phase #01 & #02 Review: Your environment is now set up with Next.js, TypeScript, and a professional Table engine. The UI is clean (Calm) and functional (Cool).
+
+Next logical step: Would you like to implement the JWT Login System (Phase #04) now that the core UI is ready to receive protected data?
+
+
+
+>>>> 006:: **
+Why this is "High Standard":
+UX Polish: Added a bounce animation and active:scale-95 for tactile feedback.
+
+Organization: The dropdown is categorized (Spreadsheets, Documents, Developer).
+
+Visual Cues: Each file type has its official color (Excel is green, PDF is red, etc.), helping users identify choices faster.
+
+Fallback: The prepareData function ensures the app doesn't crash if data is temporarily null during a service switch.
+
+Next Step: Your table is now feature-complete with multi-export, sorting, and pagination. Would you like to implement the Search/Global Filtering logic next, or move directly to the JWT Authentication phase?
+
+
+>>> 007:**
+
+3. Architect's Insight: Why pass the table object?
+Passing the table instance instead of just the data array is a best practice for several reasons:
+
+Context Awareness: If a user searches for "John" in the table, they usually want to export only the results for "John." By using table.getFilteredRowModel(), your export button becomes "smart."
+
+Selection Export: You can easily add a feature to "Export Selected Only" by checking table.getSelectedRowModel().
+
+Column Ordering: If the user drags and drops columns to reorder them, the table object knows the new order, whereas the raw data array does not.
+
+4. Final Clean-up Checklist
+Check that Pagination.tsx also uses the <TData,> generic in its props to avoid any types.
+
+Ensure ColumnVisibility.tsx is receiving the table prop correctly as defined in the previous steps.
+
+Next Step: With the Table and Export engine now error-free and strictly typed, would you like to move to Phase #04: Implementing JWT Login and Route Protection (Public vs. Private menus)?
+
+
+>>> 008:<< Done
+
+Next Step: Your "Action Center" is now a powerhouse of data portability. Would you like me to create the Search & Global Filter input next so that your "Print All" only prints the filtered results?
+
+>> 009:**
+Next Step: Your environment is now structurally complete. Would you like me to generate a Professional Login Page with the JWT mock logic, or perhaps the Sidebar Navigation with active link highlighting?
+
+
+
+>> 010:**
+Next Step: Now that the routing/proxy layer is organized, would you like me to build the Sidebar Component with the "Cool and Calm" UI, including support for those public and private menu items?
+
+>> 011:**<<<<<<<<<1
+
+2. Architectural Impact & Best Practices
+By moving to proxy.ts, we align with the "Edge-First" philosophy. Here is why this setup is robust for Phase #04:
+
+Zero-Latency Checks: The proxy runs in the Edge Runtime, meaning authentication checks happen before the heavy React components are even initialized.
+
+Security Headers: You can use this file to inject security headers (CSP, HSTS, XSS Protection) globally.
+
+i18n Support: Since you mentioned a i18n switch button in the header, this proxy file is the perfect place to detect user language from the browser and redirect to the correct /en/ or /fr/ prefix.
+
+3. Verification Steps
+Restart the dev server: npm run dev (Essential when changing framework-level files).
+
+Clear Cookies: Since we are mocking JWT, ensure your browser cookies don't have a stale auth-token if you want to test the redirect logic.
+
+4. Next Step: Public vs Private Sidebar
+Now that the "Security Guard" (Proxy) is active, would you like me to develop the Sidebar Component? I will build it to dynamically show/hide menu items based on whether the user is logged in, satisfying Requirement #7.
+
+
+
+>>> 012:**
+
+Summary of Fix:
+Delete src/middleware.ts.
+
+Ensure src/proxy.ts uses export function middleware.
+
+Restart the server with npm run dev.
+
+Next Step: Since the security proxy is now intercepting requests correctly, would you like me to build the Sidebar Navigation Component? I will implement the logic to hide/show menu items based on the "Public/Private" status we just defined in the proxy.
+
+
+******************************************************************************************
+
+Progress: Done both
+Next Step: Your "Action Center" is now a powerhouse of data portability. Would you like me to create the Search & Global Filter input next so that your "Print All" only prints the filtered results?
+
+1. Fixed Required: In DataTable If click on 'Next' or 'Previous' button to navigate the page, But left side of the table still showing this '0 of 105 row(s) selected'
+2. I would to keep default rows per page configurable(you can define defaultRowPerPage variable and use it)
+******************************************************************************************
+
+1. Add to Git - DONE
+2. Dedicated core .scss for core DataTable - DONE
+3. TAG-CASE#1 for as of now developed DataTable - DONE
+4. Auto Header pick and display JSON(OPTION TO: Column can be add config) as DataTable  Imp - TAG-CASE#2
+5. Pass style from calling  place (Page) - Imp - TAG-CASE#3
+6. Server-Side Pagination - Imp - TAG-CASE#4
+7. Server-Side Pagination with display with condition(Date(B/w 2 date or id = b/w 2 or stats string/end)) to pick data from JSON data, (accessKey and condition)
+******************************************************************************************
+https://github.com/hebbarnsoorya/enterprise-portal.git
+https://github.com/hebbarnsoorya/myapp.git

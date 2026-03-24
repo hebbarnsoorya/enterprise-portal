@@ -10,10 +10,11 @@ import dayjs from 'dayjs';
 // Define Columns here or in a separate config file
 const columns: ColumnDef<UserData>[] = [
   {
-  id: "select",
+  id: "select", // This ID must match our check in DataTable.tsx
   header: ({ table }) => (
     <input
       type="checkbox"
+      className="form-checkbox"
       checked={table.getIsAllPageRowsSelected()}
       onChange={table.getToggleAllPageRowsSelectedHandler()}
     />
@@ -27,11 +28,17 @@ const columns: ColumnDef<UserData>[] = [
     />
   ),
 },
-  { accessorKey: "id", header: "User ID" },
+  { 
+    accessorKey: "id",
+  header: "ID",
+  meta: { align: 'center' } // You can check for this in DataTable.tsx
+   },
+  
   {
     accessorKey: "name",
     header: "User Name",
     cell: (info) => <span className="font-medium text-gray-900">{info.getValue() as string}</span>,
+    enableSorting: false, // Disable sorting for name column to demonstrate flexibility
   },
   { accessorKey: "email", header: "Email Address" },
   { accessorKey: "role", header: "User Role" },

@@ -6,15 +6,19 @@ import {
   getCoreRowModel, 
   getPaginationRowModel, 
   getSortedRowModel,
-  getFilteredRowModel, // Added for Global Search
+  getFilteredRowModel,
   ColumnDef,
   flexRender,
 } from '@tanstack/react-table';
 
+// Relative Style Import (Modular)
+import './DataTable.scss'; 
+
 import { PaginationControls } from './Pagination';
 import { ExportControls } from './ExportControls';
 import { ColumnVisibility } from './ColumnVisibility';
-import { GlobalSearch } from './GlobalSearch'; // New Component
+import { GlobalSearch } from './GlobalSearch';
+import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react';
 
 const DEFAULT_ROWS_PER_PAGE = 5;
 
@@ -26,7 +30,7 @@ interface DataTableProps<TData extends { id: string | number }> {
 export function DataTable<TData extends { id: string | number }>({ columns, data }: DataTableProps<TData>) {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState({});
-  const [globalFilter, setGlobalFilter] = useState(''); // State for search
+  const [globalFilter, setGlobalFilter] = useState('');
 
   const table = useReactTable({
     data,
@@ -34,26 +38,25 @@ export function DataTable<TData extends { id: string | number }>({ columns, data
     state: {
       rowSelection,
       columnVisibility,
-      globalFilter, // Sync search state
+      globalFilter,
     },
     onGlobalFilterChange: setGlobalFilter,
-    getRowId: (row) => row.id.toString(),
+    getRowId: (row) => row.id.toString(), // Fix #1 logic
     initialState: {
-      pagination: { pageSize: DEFAULT_ROWS_PER_PAGE },
+      pagination: { pageSize: DEFAULT_ROWS_PER_PAGE }, // Fix #2 logic
     },
     onRowSelectionChange: setRowSelection,
     onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(), // Required for search logic
+    getFilteredRowModel: getFilteredRowModel(),
     enableRowSelection: true,
   });
 
   return (
-    <div className="enterprise-table-wrapper space-y-4">
-      {/* Top Bar with Search and Actions */}
-      <div className="flex flex-col md:flex-row items-center justify-between p-4 bg-white border-b rounded-t-xl gap-4">
+    <div className="enterprise-table-wrapper">
+      <div className="table-controls-bar">
         <GlobalSearch 
           value={globalFilter ?? ''} 
           onChange={value => setGlobalFilter(String(value))} 
@@ -64,29 +67,69 @@ export function DataTable<TData extends { id: string | number }>({ columns, data
         </div>
       </div>
 
-      <div className="overflow-x-auto border-x border-slate-100">
-        <table className="w-full text-sm text-left border-collapse">
-          {/* ... Table Head & Body remain same as previous version ... */}
-          <thead className="bg-slate-50 border-b border-slate-200">
-            {table.getHeaderGroups().map(headerGroup => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map(header => (
-                  <th key={header.id} className="px-6 py-4 font-semibold text-slate-600 uppercase tracking-wider text-[11px]">
-                    {flexRender(header.column.columnDef.header, header.getContext())}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody className="divide-y divide-slate-100 bg-white">
-            {table.getRowModel().rows.map(row => (
-              <tr key={row.id} className={`hover:bg-blue-50/40 transition-colors ${row.getIsSelected() ? 'bg-blue-50/60' : ''}`}>
-                {row.getVisibleCells().map(cell => (
-                  <td key={cell.id} className="px-6 py-4 text-slate-700">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
+      <div className="table-container">
+        <table>
+<thead>
+  {table.getHeaderGroups().map(headerGroup => (
+  <tr key={headerGroup.id}>
+    {headerGroup.headers.map(header => {
+  // Fix#240326P0715: Define the missing variable here
+  const isSorted = header.column.getIsSorted(); 
+  
+  const isSelection = header.column.id === 'select';
+  const isAction = header.column.id === 'actions';
+  const isCentered = isSelection || isAction;
+
+  return (
+    <th 
+      key={header.id}
+      onClick={header.column.getToggleSortingHandler()}
+      className={`
+        ${isSelection ? 'column-selection' : ''} 
+        ${isCentered ? 'column-center' : ''}
+        ${header.column.getCanSort() ? 'cursor-pointer select-none group' : ''}
+      `}
+    >
+      <div className={isCentered ? 'flex-header' : 'flex items-center gap-2'}>
+        {flexRender(header.column.columnDef.header, header.getContext())}
+        
+        {/* Sort Icons (Hidden for Selection Column) */}
+        {!isSelection && header.column.getCanSort() && (
+           <span className="sort-icon transition-opacity opacity-0 group-hover:opacity-100">
+              {{
+                asc: <ArrowUp size={14} className="text-blue-500" />,
+                desc: <ArrowDown size={14} className="text-blue-500" />,
+              }[isSorted as string] ?? <ArrowUpDown size={14} className="opacity-30 group-hover:opacity-100" />}
+            </span>
+          )}
+      </div>
+    </th>
+        );
+      })}
+    </tr>
+  ))}
+</thead>
+          <tbody>
+
+           {table.getRowModel().rows.map(row => (
+  <tr key={row.id} className={row.getIsSelected() ? 'row-selected' : ''}>
+    {row.getVisibleCells().map(cell => {
+      const isCentered = cell.column.id === 'select' || cell.column.id === 'actions';
+      
+      return (
+        <td 
+          key={cell.id} 
+          className={isCentered ? 'column-center' : ''}
+        >
+          <div className={isCentered ? 'flex-cell' : ''}>
+            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+          </div>
+        </td>
+      );
+    })}
+  </tr>
+
+
             ))}
           </tbody>
         </table>
