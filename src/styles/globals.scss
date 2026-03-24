@@ -1,0 +1,14 @@
+.enterprise-table-container {
+  @apply shadow-lg rounded-xl border border-gray-100 bg-white;
+
+  th {
+    @apply text-gray-500 text-xs tracking-wider uppercase bg-gray-50/50;
+  }
+
+  tr {
+    @apply transition-all duration-200;
+    &:hover {
+      @apply bg-blue-50/30;
+    }
+  }
+}
