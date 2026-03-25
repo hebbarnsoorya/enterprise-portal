@@ -1,4 +1,4 @@
-/**
+/** DataTable: Define and Confing ALL Columns
  * TAG-CASE#1: Enterprise DataTable Component Package
  * High-Standard Barrel Export for Modular Architecture
  */

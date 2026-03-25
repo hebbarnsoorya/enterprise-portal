@@ -1,10 +1,11 @@
-/**
+/** DataTableV3: Auto Create Header and Auto Load Data(Direct Pass JSON) - Resizable Coloumn Width
+
  * TAG-CASE#2: Enterprise DataTable Component Package
  * High-Standard Barrel Export for Modular Architecture
  */
 
 // 1. Export the main component
-export { DataTable } from './DataTable';
+export { DataTableV3 } from './DataTable';
 
 // 2. Export sub-components if they are needed elsewhere (Optional)
 export { GlobalSearch } from './GlobalSearch';
