@@ -12,7 +12,7 @@
   font-family: inherit;
   margin-top: 1rem;
 
-  // 1. Controls Bar
+  // 1. Controls Bar - FIXED STACKING CONTEXT
   .table-controls-bar {
     display: flex;
     flex-direction: column;
@@ -20,6 +20,10 @@
     background: #ffffff;
     border-bottom: 1px solid #f1f5f9; // slate-100
     gap: 1rem;
+    
+    // High z-index ensures dropdowns starting here stay on top
+    position: relative;
+    z-index: 30; 
 
     @media (min-width: 768px) {
       flex-direction: row;
@@ -33,6 +37,7 @@
     width: 100%;
     overflow-x: auto;
     background: #ffffff;
+    position: relative;
 
     /* Custom Thin Scrollbar */
     &::-webkit-scrollbar { height: 6px; }
@@ -45,16 +50,18 @@
 
     table {
       width: 100%;
-      border-collapse: separate;
+      border-collapse: separate; 
       border-spacing: 0;
       table-layout: auto;
 
-      // 3. Header Styles
+      // 3. Header Styles - STICKY WITH LAYER CONTROL
       thead {
         background-color: #f8fafc; // slate-50
         position: sticky;
         top: 0;
-        z-index: 10;
+        // Keep this at 20 so it stays above the <tbody> (z-index: 1) 
+        // but below the .table-controls-bar (z-index: 30)
+        z-index: 20;
 
         th {
           padding: 0.85rem 1rem;
@@ -66,6 +73,10 @@
           border-bottom: 1px solid #e2e8f0;
           transition: background-color 0.2s;
           user-select: none;
+          background: #f8fafc; // Prevent row bleed-through during scroll
+
+          // Ensure the individual cells don't create new higher contexts
+          z-index: 20;
 
           &.cursor-pointer:hover {
             background-color: #f1f5f9; // slate-100
@@ -85,6 +96,8 @@
       tbody {
         tr {
           transition: background-color 0.15s ease;
+          position: relative;
+          z-index: 1;
 
           td {
             padding: 1rem;
@@ -146,6 +159,16 @@
     height: 1rem;
     accent-color: #4f46e5; // indigo-600
   }
+}
+
+/* --- DROPDOWN & PORTAL FIXES --- */
+.column-visibility-dropdown {
+  position: absolute;
+  z-index: 50 !important; 
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
 // Utility to handle long text in dynamic JSON

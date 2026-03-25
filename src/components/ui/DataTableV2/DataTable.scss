@@ -1,6 +1,7 @@
 /* Enterprise DataTable V2 - TAG-CASE#2
    Theme: Cool & Calm (Indigo & Slate)
    Focus: Responsive Fluidity & Resizing Precision
+   Update: Stacking Context Fix for Dropdowns (Fix#240326P654)
 */
 
 .enterprise-table-wrapper {
@@ -19,6 +20,10 @@
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
+    
+    // FIX#240326P654: High z-index ensures dropdowns starting here stay on top
+    position: relative;
+    z-index: 30; 
   }
 
   .table-container {
@@ -46,6 +51,7 @@
       thead {
         position: sticky;
         top: 0;
+        // Keep this at 20 so it stays above the <tbody> but below controls-bar
         z-index: 20;
         background: #f8fafc;
 
@@ -63,6 +69,8 @@
           transition: background-color 0.2s;
           // Prevent headers from being squished too much
           min-width: 80px;
+          // Ensure individual cells respect the sticky stacking layer
+          z-index: 20;
 
           .flex-header {
             display: flex;
@@ -160,7 +168,7 @@
   right: 0;
   top: 0;
   height: 100%;
-  width: 5px; // Increased hit area for easier grabbing
+  width: 5px; 
   background: transparent;
   cursor: col-resize;
   user-select: none;
@@ -185,7 +193,7 @@
   }
 }
 
-// Special Case for Selection Column (Should not grow)
+// Special Case for Selection Column
 .column-selection {
   width: 50px !important;
   min-width: 50px !important;
@@ -195,6 +203,16 @@
     padding: 0 !important;
     justify-content: center;
   }
+}
+
+// FIX#240326P654: Ensure the specific dropdown container is always on top
+.column-visibility-dropdown {
+  position: absolute;
+  z-index: 50 !important; 
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
 // Highlight resizer on header hover

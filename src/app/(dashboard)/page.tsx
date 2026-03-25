@@ -54,6 +54,15 @@ const DASHBOARD_CARDS = [
     color: "bg-indigo-50",
     shadow: "shadow-indigo-500/10"
   },
+  
+  {
+    title: "Master Registry V3",
+    description: "Advanced data engine with enhanced filtering and batch actions.",
+    icon: <Database className="text-indigo-600" size={24} />,
+    href: "/registry-v3",
+    color: "bg-indigo-50",
+    shadow: "shadow-indigo-500/10"
+  },
   {
     title: "Master Registry V4",
     description: "Advanced data engine with enhanced filtering and batch actions.",

@@ -1,5 +1,6 @@
 /* Enterprise DataTable - Modular Styles 
    Theme: Cool & Calm (Slate & Indigo)
+   Refined for TAG-CASE#3: Conditional Loading & Z-Index Precision
 */
 
 .enterprise-table-wrapper {
@@ -11,6 +12,7 @@
   font-family: inherit;
   margin-top: 1rem;
 
+  // FIX: Stacking context for dropdowns
   .table-controls-bar {
     display: flex;
     flex-direction: column;
@@ -18,6 +20,8 @@
     background: #ffffff;
     border-bottom: 1px solid #f1f5f9; // slate-100
     gap: 1rem;
+    position: relative; 
+    z-index: 30; // High z-index ensures dropdowns stay on top of sticky headers
 
     @media (min-width: 768px) {
       flex-direction: row;
@@ -29,46 +33,57 @@
   .table-container {
     width: 100%;
     overflow-x: auto;
+    background: #ffffff;
+    position: relative;
     
     table {
       width: 100%;
-      border-collapse: separate;
+      border-collapse: separate; 
       border-spacing: 0;
+      table-layout: auto; // Fluid for TAG-CASE#3
 
       thead {
         background-color: #f8fafc; // slate-50
-        
-        /* Add inside the thead th block */
-    th {
-    position: relative;
-    user-select: none;
+        position: sticky;
+        top: 0;
+        z-index: 20; // Sits above body but below controls-bar (z:30)
 
-    .flex {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
+        th {
+          position: relative;
+          background-color: #f8fafc;
+          padding: 0.85rem 1.5rem;
+          font-size: 0.75rem;
+          font-weight: 700;
+          color: #64748b; // slate-500
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          border-bottom: 1px solid #e2e8f0;
+          user-select: none;
+          z-index: 20;
 
-    /* Fix#240326P654: Visual feedback for sortable columns */
-    &.cursor-pointer {
-        &:hover {
-        background-color: #f1f5f9; // slate-100
-        color: #1e293b; // slate-800
-        
-        span {
-            opacity: 1;
+          .flex {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+          }
+
+          /* Fix#240326P654: Visual feedback for sortable columns */
+          &.cursor-pointer {
+            transition: background-color 0.2s;
+            &:hover {
+              background-color: #f1f5f9; // slate-100
+              color: #1e293b; // slate-800
+            }
+          }
+
+          /* Active sort column highlight */
+          span {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+          }
         }
-        }
-    }
-
-    /* Active sort column highlight */
-    span {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s ease;
-    }
-    }
       }
 
       tbody {
@@ -81,6 +96,7 @@
             color: #334155; // slate-700
             border-bottom: 1px solid #f1f5f9;
             vertical-align: middle;
+            white-space: nowrap; // Clean dynamic JSON rendering
           }
 
           &:hover {
@@ -90,7 +106,6 @@
           /* Global Selection Style (Fix #1 Integration) */
           &.row-selected {
             background-color: #eff6ff; // blue-50
-            
             td {
               color: #1e40af; // blue-800
               font-weight: 500;
@@ -102,12 +117,8 @@
   }
 
   /* Custom Thin Scrollbar */
-  .table-container::-webkit-scrollbar {
-    height: 6px;
-  }
-  .table-container::-webkit-scrollbar-track {
-    background: #f8fafc;
-  }
+  .table-container::-webkit-scrollbar { height: 6px; }
+  .table-container::-webkit-scrollbar-track { background: #f8fafc; }
   .table-container::-webkit-scrollbar-thumb {
     background: #cbd5e1; // slate-300
     border-radius: 10px;
@@ -115,72 +126,55 @@
   }
 }
 
-/* FIX#240326P0707: Alignment for Selection Column */
-.column-selection {
-  width: 40px;          // Fixed width for the checkbox column
-  padding-left: 1rem !important; 
-  padding-right: 0 !important;
-  text-align: center;
-  vertical-align: middle;
+/* FIX#240326P0715: Global Alignment Rules */
 
+.column-center {
+  text-align: center !important;
+  .flex-header, .flex-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+  }
+}
+
+.column-left {
+  text-align: left !important;
+  .flex-header, .flex-cell {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+/* FIX#240326P0707: Specific override for Selection Column (Checkbox) */
+.column-selection {
+  width: 48px !important;
+  padding: 0 !important;
+  text-align: center !important;
+  
   .flex-center {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
   }
-}
 
-/* Ensure the header and body cells use this */
-th.column-selection, 
-td.column-selection {
-  @extend .column-selection;
-}
-
-/* Adjust standard th to not interfere with selection */
-th:not(.column-selection) {
-  padding: 0.85rem 1.5rem;
-}
-
-/* FIX#240326P0715: Global Alignment Rules */
-
-/* 1. Center Aligned Columns (Header & Cell) */
-.column-center {
-  text-align: center !important;
-  
-  .flex-header {
-    display: flex;
-    align-items: center;
-    justify-content: center; // Pins header text/icons to center
-    gap: 0.5rem;
-    width: 100%;
-  }
-
-  .flex-cell {
-    display: flex;
-    align-items: center;
-    justify-content: center; // Pins cell content to center
-    width: 100%;
+  input[type="checkbox"] {
+    cursor: pointer;
+    accent-color: #4f46e5; // Indigo-600
   }
 }
 
-/* 2. Standard Left Aligned Columns (Default) */
-th:not(.column-center), 
-td:not(.column-center) {
-  text-align: left;
-  padding: 0.85rem 1.5rem; // Consistent breathing room
-  
-  .flex-header {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start; // Keeps text to the left
-    gap: 0.5rem;
-  }
-}
-
-/* 3. Specific override for Selection Column (Checkbox) */
-.column-selection {
-  width: 48px;
-  padding: 0 !important;
-  text-align: center !important;
+/* FIX: Z-Index for external Portals/Dropdowns */
+.column-visibility-dropdown,
+.export-menu-dropdown {
+  position: absolute;
+  z-index: 50 !important; 
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }

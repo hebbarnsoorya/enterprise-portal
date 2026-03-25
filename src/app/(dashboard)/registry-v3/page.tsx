@@ -1,6 +1,6 @@
 "use client";
 
-import { DataTableV2 } from '@/components/ui/DataTableV2/DataTable';
+import { DataTableV3 } from '@/components/ui/DataTableV3/DataTable';
 import { fetchMockData, UserData } from '@/services/mockService';
 import { useEffect, useState } from 'react';
 
@@ -37,7 +37,7 @@ export default function RegistryV2Page() {
 
   return (
     <div className="p-6">
-      <DataTableV2
+      <DataTableV3
         data={data} 
         overrideColumns={myOverrides} // Optional! If removed, it auto-generates 'status'
       />

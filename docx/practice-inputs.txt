@@ -424,5 +424,24 @@ Next Step: Your "Action Center" is now a powerhouse of data portability. Would y
 6. Server-Side Pagination - Imp - TAG-CASE#4
 7. Server-Side Pagination with display with condition(Date(B/w 2 date or id = b/w 2 or stats string/end)) to pick data from JSON data, (accessKey and condition)
 ******************************************************************************************
+NOTE: 
+
+DataTable different Versions Features::
+DataTable: Define and Confing ALL Columns 
+DataTableV2: Auto Create Header and Load Data(Direct Pass JSON)
+DataTableV3: Auto Create Header and Auto Load Data(Direct Pass JSON) - Resizable Coloumn Width
+DataTableV4: NO AUTO LOAD - Conditions -  Specific to JSON & DataTable tightly COUPLED ( Note: Removed Resizable Coloumn Width feature)
+DataTableV5: NO AUTO LOAD - V4 + Add  'CLOSE Filter Button' Specific to JSON & DataTable tightly COUPLED  - ( Note: Removed Resizable Coloumn Width feature)
+
+
+
+******************************************************************************************
+******************************************************************************************
+******************************************************************************************
+******************************************************************************************
+******************************************************************************************
+******************************************************************************************
 https://github.com/<USER-NAME>/<Repo-Name>.git
 https://github.com/<USER0-NAME>/myapp.git
+
+
