@@ -432,6 +432,8 @@ DataTableV2: Auto Create Header and Load Data(Direct Pass JSON) - Resizable Colo
 DataTableV3: Auto Create Header and Auto Load Data(Direct Pass JSON)
 DataTableV4: NO AUTO LOAD - Conditions -  Specific to JSON & DataTable tightly COUPLED ( Note: Removed Resizable Coloumn Width feature)
 DataTableV5: NO AUTO LOAD - V4 + Add  'CLOSE Filter Button' Specific to JSON & DataTable tightly COUPLED  - ( Note: Removed Resizable Coloumn Width feature)
+/** DataTableV6: Auto Create Header and Load Data(Direct Pass JSON)  - Resizable Coloumn Width, Fetch from URL, Upload JSON ect Features
+
 
 
 

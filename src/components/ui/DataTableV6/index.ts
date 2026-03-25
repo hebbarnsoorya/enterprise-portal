@@ -1,4 +1,4 @@
-/** DataTableV2: Auto Create Header and Load Data(Direct Pass JSON)  - Resizable Coloumn Width
+/** DataTableV6: Auto Create Header and Load Data(Direct Pass JSON)  - Resizable Coloumn Width, Fetch from URL, Upload JSON ect Features
  * TAG-CASE#2: Enterprise DataTable Component Package
  * High-Standard Barrel Export for Modular Architecture
  */

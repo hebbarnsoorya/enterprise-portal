@@ -237,3 +237,28 @@ th:hover .resizer::after {
     border-radius: 10px;
   }
 }
+
+// src/components/ui/DataTableV6/DataTable.scss
+
+.column-visibility-menu {
+  position: absolute;      /* FLOATS over the content */
+  top: 100%;               /* Starts right below the button */
+  right: 0;                /* Aligns to the right edge */
+  z-index: 999;           /* Ensures it sits ABOVE the table rows */
+  
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  
+  /* The Scroll fix from before */
+  max-height: 350px;
+  overflow-y: auto;
+  min-width: 220px;
+  margin-top: 8px;
+}
+
+/* Ensure the parent container is relative so absolute positioning works */
+.table-controls-bar {
+  position: relative;
+}

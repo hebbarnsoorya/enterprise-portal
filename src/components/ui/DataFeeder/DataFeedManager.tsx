@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from 'react';
-import { Globe, FileJson } from 'lucide-react';
+import { Globe, FileJson, RotateCcw } from 'lucide-react';
 
 interface DataFeedManagerProps {
   onDataLoaded: (data: any[]) => void;
@@ -16,6 +16,19 @@ export function DataFeedManager({ onDataLoaded, loading, setLoading }: DataFeedM
   const [skip, setSkip] = useState('0');
   const [status, setStatus] = useState<{ type: 'success' | 'error' | 'info' | '', msg: string }>({ type: '', msg: '' });
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  /**
+   * NEW: Reset Handler
+   * Clears form fields and empties the DataTable
+   */
+  const handleReset = () => {
+    setUrl('');
+    setLimit('100');
+    setSkip('0');
+    setStatus({ type: '', msg: '' });
+    onDataLoaded([]); // Empties the table data
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
 
   // TAG-CASE#4: Smart Auto-Discovery Logic
   const processData = (json: any) => {
@@ -86,7 +99,19 @@ export function DataFeedManager({ onDataLoaded, loading, setLoading }: DataFeedM
         <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
           <Globe size={16} /> Data Feed Controls (TAG-CASE#4)
         </h2>
-        {loading && <span className="text-xs text-indigo-600 animate-pulse font-medium">Processing...</span>}
+        
+        <div className="flex items-center gap-3">
+          {loading && <span className="text-xs text-indigo-600 animate-pulse font-medium">Processing...</span>}
+          
+          {/* RESET BUTTON */}
+          <button 
+            onClick={handleReset}
+            className="p-1.5 text-slate-400 hover:text-rose-500 hover:bg-rose-50 rounded-md transition-all flex items-center gap-1 text-xs font-bold uppercase tracking-tighter"
+            title="Reset form and clear table"
+          >
+            <RotateCcw size={14} /> Reset
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-end">
@@ -120,7 +145,7 @@ export function DataFeedManager({ onDataLoaded, loading, setLoading }: DataFeedM
             value={skip} onChange={(e) => setSkip(e.target.value)}
             className="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-indigo-500 bg-slate-50 cursor-pointer"
           >
-            {[0,10, 25, 50, 100, 500].map(val => (
+            {[0, 10, 25, 50, 100, 500].map(val => (
               <option key={val} value={val}>{val}</option>
             ))}
           </select>
