@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
-import { DataTable } from '@/components/ui/DataTableV2/DataTable';
+import { DataTableV2 } from '@/components/ui/DataTableV2/DataTable';
 import { fetchMockData, UserData } from '@/services/mockService';
 import { Edit, Trash, Eye, CheckCircle, XCircle } from 'lucide-react';
 import dayjs from 'dayjs';
@@ -108,7 +108,7 @@ export default function DirectJSONToDataTable() {
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
         </div>
       ) : (
-        <DataTable columns={columns} data={data} />
+        <DataTableV2 overrideColumns={columns} data={data} />
       )}
     </main>
   );
