@@ -39,7 +39,7 @@ export default function RegistryV2Page() {
     <div className="p-6">
       <DataTableV2
         data={data} 
-        overrideColumns={myOverrides} // Optional! If removed, it auto-generates 'status'
+        //overrideColumns={myOverrides} // Optional! If removed, it auto-generates 'status'
       />
     </div>
   );

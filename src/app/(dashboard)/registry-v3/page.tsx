@@ -4,7 +4,7 @@ import { DataTableV3 } from '@/components/ui/DataTableV3/DataTable';
 import { fetchMockData, UserData } from '@/services/mockService';
 import { useEffect, useState } from 'react';
 
-export default function RegistryV2Page() {
+export default function RegistryV3Page() {
   const [data, setData] = useState<UserData[]>([]);
   const [loading, setLoading] = useState(true);
 

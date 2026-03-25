@@ -1,0 +1,26 @@
+[
+  {
+    "userid": "USR-001",
+    "username": "Alex Rivers",
+    "useremail": "alex.rivers@enterprise.com",
+    "userrole": "Senior Developer",
+    "userstatus": "Active",
+    "userlastLogin": "2026-03-24T10:00:00Z"
+  },
+  {
+    "userid": "USR-002",
+    "username": "Sam Knight",
+    "useremail": "s.knight@enterprise.com",
+    "userrole": "Product Manager",
+    "userstatus": "Away",
+    "userlastLogin": "2026-03-25T08:30:00Z"
+  },
+  {
+    "userid": "USR-003",
+    "username": "Jordan Case",
+    "useremail": "jordan.c@enterprise.com",
+    "userrole": "QA Engineer",
+    "userstatus": "Offline",
+    "userlastLogin": "2026-03-22T15:45:00Z"
+  }
+]

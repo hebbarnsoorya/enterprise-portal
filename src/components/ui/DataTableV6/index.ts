@@ -4,7 +4,7 @@
  */
 
 // 1. Export the main component
-export { DataTableV2 } from './DataTable';
+export { DataTableV6 } from './DataTable';
 
 // 2. Export sub-components if they are needed elsewhere (Optional)
 export { GlobalSearch } from './GlobalSearch';

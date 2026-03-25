@@ -428,14 +428,39 @@ NOTE:
 
 DataTable different Versions Features::
 DataTable: Define and Confing ALL Columns 
-DataTableV2: Auto Create Header and Load Data(Direct Pass JSON)
-DataTableV3: Auto Create Header and Auto Load Data(Direct Pass JSON) - Resizable Coloumn Width
+DataTableV2: Auto Create Header and Load Data(Direct Pass JSON) - Resizable Coloumn Width
+DataTableV3: Auto Create Header and Auto Load Data(Direct Pass JSON)
 DataTableV4: NO AUTO LOAD - Conditions -  Specific to JSON & DataTable tightly COUPLED ( Note: Removed Resizable Coloumn Width feature)
 DataTableV5: NO AUTO LOAD - V4 + Add  'CLOSE Filter Button' Specific to JSON & DataTable tightly COUPLED  - ( Note: Removed Resizable Coloumn Width feature)
 
 
 
 ******************************************************************************************
+
+
+Now would start to implement Server side Pagination DataTable name this as 'TAG-CASE#4'.
+
+Imp Note:
+
+NOTE#250326P0129: This continuation of 'TAG-CASE#1' , but from 'TAG-CASE#2' code remove resizableColumn features and continue with 'TAG-CASE#3' features now onwards.
+
+I would prefer to put few condition as below
+
+TASK#250326P0129.1: Remove resizableColumn features from 'TAG-CASE#2' code and continue with 'TAG-CASE#3' features
+
+TASK#250326P0129.2: I wanted to pass some conditions to load data to DataTable.
+
+Example: im my JSON result i have id(Number), name(TEXT), doj(DATE), ImagePath(String), status(Boolean) etc accessorKey.
+
+Condition#1: id>5 && id << 25 AND/OR name.contaians with 'kevin' AND/OR status=='true' . doj > '2025-01-01' AND '2026-01-01'. Here 'id' is always accessorKey.
+
+
+
+IMPORTANT NOTE:
+
+NOTE#250326P0146: I have removed resizableColumn features from 'TAG-CASE#2' from 2 files with contents share below , you can review and continue from there to continue add features of 'TAG-CASE#3' .
+
+
 ******************************************************************************************
 ******************************************************************************************
 ******************************************************************************************

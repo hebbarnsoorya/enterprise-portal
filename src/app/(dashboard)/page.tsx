@@ -78,7 +78,15 @@ const DASHBOARD_CARDS = [
     href: "/registry-v5",
     color: "bg-indigo-50",
     shadow: "shadow-indigo-500/10"
-  }
+  },
+  {
+    title: "Master Registry V6",
+    description: "Advanced data engine with enhanced filtering and batch actions.",
+    icon: <Database className="text-indigo-600" size={24} />,
+    href: "/registry-v6",
+    color: "bg-indigo-50",
+    shadow: "shadow-indigo-500/10"
+  },
 ];
 
 export default function DashboardHub() {
