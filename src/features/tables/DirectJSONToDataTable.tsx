@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
-import { DataTable } from '@/components/ui/DataTable/DataTable';
+import { DataTable } from '@/components/ui/DataTableV2/DataTable';
 import { fetchMockData, UserData } from '@/services/mockService';
 import { Edit, Trash, Eye, CheckCircle, XCircle } from 'lucide-react';
 import dayjs from 'dayjs';
@@ -99,7 +99,7 @@ export default function DirectJSONToDataTable() {
   return (
     <main className="p-8 max-w-7xl mx-auto space-y-6">
       <header>
-        <h1 className="text-2xl font-bold text-gray-800">User Management</h1>
+        <h1 className="text-2xl font-bold text-gray-800">User Management V2</h1>
         <p className="text-gray-500 text-sm">Manage enterprise users and permissions.</p>
       </header>
 

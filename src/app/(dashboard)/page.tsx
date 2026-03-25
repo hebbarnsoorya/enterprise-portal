@@ -7,7 +7,8 @@ import {
   Heart, 
   Flame, 
   Receipt, 
-  ArrowUpRight 
+  ArrowUpRight, 
+  Database
 } from 'lucide-react';
 
 const DASHBOARD_CARDS = [
@@ -19,6 +20,7 @@ const DASHBOARD_CARDS = [
     color: "bg-blue-50",
     shadow: "shadow-blue-500/10"
   },
+   
   {
     title: "Devotee Management",
     description: "View and manage devotee records, history, and profiles.",
@@ -42,18 +44,30 @@ const DASHBOARD_CARDS = [
     href: "/receipts",
     color: "bg-emerald-50",
     shadow: "shadow-emerald-500/10"
+  },
+  // NEW CARD FOR TAG-CASE#2
+  {
+    title: "Master Registry V2",
+    description: "Advanced data engine with enhanced filtering and batch actions.",
+    icon: <Database className="text-indigo-600" size={24} />,
+    href: "/registry-v2",
+    color: "bg-indigo-50",
+    shadow: "shadow-indigo-500/10"
   }
 ];
 
 export default function DashboardHub() {
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    
+      <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <header>
         <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">System Overview</h1>
         <p className="text-slate-500 mt-1 font-medium">Select a module below to begin managing your records.</p>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+      { /* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"> */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
         {DASHBOARD_CARDS.map((card) => (
           <Link 
             key={card.href} 

@@ -376,6 +376,23 @@ Next Step: Since the guard is now active, would you like me to provide the Login
 Now that the layout shell is perfect, would you like me to provide the Login Page implementation so you can test the middleware.ts redirect and actually "log in" to see this layout?
 
 Once you move that file and delete the root page.tsx, try refreshing. Does the Sidebar and Header appear now? If so, we can move on to the Sign In/Out functions!
+
+
+Next Step: Would you like me to generate the specific Column Definitions for the ReceiptsManagementPage? This would include financial formatting for amounts and payment status badges.
+
+
+Phase 3: Architect's Recommendations for Improvement
+Empty State UI: Currently, if data is [], the table shows empty headers. I suggest adding an "Empty Data" illustration to guide the user.
+
+Date Detection: In the autoKeys.map logic, we could add a check: if a string matches an ISO date format, automatically wrap it in dayjs().format() so the user doesn't have to override every date column.
+
+Skeleton Loading: Instead of a simple spinner, use Skeleton Rows that match the auto-generated columns to provide a smoother "Cool & Calm" loading experience.
+
+Key Exclusion: I recommend adding an excludeKeys={['password', 'internal_id']} prop to the DataTable to prevent sensitive data from being auto-generated into the UI.
+
+Next Step: With the Dynamic Column Engine now live, would you like to implement the Date Detection logic or the Sensitive Key Exclusion feature next for TAG-CASE#2?
+
+
 ******************************************************************************************
 ******************************************************************************************
 ******************************************************************************************
@@ -405,5 +422,5 @@ Next Step: Your "Action Center" is now a powerhouse of data portability. Would y
 6. Server-Side Pagination - Imp - TAG-CASE#4
 7. Server-Side Pagination with display with condition(Date(B/w 2 date or id = b/w 2 or stats string/end)) to pick data from JSON data, (accessKey and condition)
 ******************************************************************************************
-https://github.com/hebbarnsoorya/enterprise-portal.git
-https://github.com/hebbarnsoorya/myapp.git
+https://github.com/<USER-NAME>/<Repo-Name>.git
+https://github.com/<USER0-NAME>/myapp.git

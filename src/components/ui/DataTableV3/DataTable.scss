@@ -1,0 +1,157 @@
+/* Enterprise DataTable V2 - TAG-CASE#2
+   Theme: Cool & Calm (Slate & Indigo)
+   Refined for Dynamic JSON Engine
+*/
+
+.enterprise-table-wrapper {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0; // slate-200
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  font-family: inherit;
+  margin-top: 1rem;
+
+  // 1. Controls Bar
+  .table-controls-bar {
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem;
+    background: #ffffff;
+    border-bottom: 1px solid #f1f5f9; // slate-100
+    gap: 1rem;
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  // 2. Table Container & Scrollbar
+  .table-container {
+    width: 100%;
+    overflow-x: auto;
+    background: #ffffff;
+
+    /* Custom Thin Scrollbar */
+    &::-webkit-scrollbar { height: 6px; }
+    &::-webkit-scrollbar-track { background: #f8fafc; }
+    &::-webkit-scrollbar-thumb {
+      background: #cbd5e1; // slate-300
+      border-radius: 10px;
+      &:hover { background: #94a3b8; }
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      table-layout: auto;
+
+      // 3. Header Styles
+      thead {
+        background-color: #f8fafc; // slate-50
+        position: sticky;
+        top: 0;
+        z-index: 10;
+
+        th {
+          padding: 0.85rem 1rem;
+          font-size: 0.75rem;
+          font-weight: 700;
+          color: #64748b; // slate-500
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          border-bottom: 1px solid #e2e8f0;
+          transition: background-color 0.2s;
+          user-select: none;
+
+          &.cursor-pointer:hover {
+            background-color: #f1f5f9; // slate-100
+            color: #1e293b; // slate-800
+          }
+
+          .flex-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            width: 100%;
+          }
+        }
+      }
+
+      // 4. Body Styles
+      tbody {
+        tr {
+          transition: background-color 0.15s ease;
+
+          td {
+            padding: 1rem;
+            font-size: 0.875rem;
+            color: #334155; // slate-700
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: middle;
+            white-space: nowrap; // Keeps dynamic JSON data tidy
+          }
+
+          &:hover {
+            background-color: rgba(248, 250, 252, 0.8); // soft slate-50 hover
+          }
+
+          &.row-selected {
+            background-color: #f5f3ff; // indigo-50
+            td {
+              color: #4f46e5; // indigo-600
+              font-weight: 500;
+              border-bottom-color: #e0e7ff;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/* 5. Logic-Based Alignment Classes (Used by DataTableV2.tsx) */
+
+// Center Alignment (Selection & Actions)
+.column-center {
+  text-align: center !important;
+  width: 60px; // Standard width for center columns
+
+  .flex-header, .flex-cell {
+    justify-content: center;
+    margin: 0 auto;
+  }
+}
+
+// Left Alignment (Default for Data)
+.column-left {
+  text-align: left !important;
+
+  .flex-header, .flex-cell {
+    justify-content: flex-start;
+  }
+}
+
+// Special Case: Selection Column
+.column-selection {
+  width: 48px;
+  padding: 0 !important;
+  
+  input[type="checkbox"] {
+    cursor: pointer;
+    width: 1rem;
+    height: 1rem;
+    accent-color: #4f46e5; // indigo-600
+  }
+}
+
+// Utility to handle long text in dynamic JSON
+.truncate-cell {
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
