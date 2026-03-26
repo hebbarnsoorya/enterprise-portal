@@ -421,8 +421,9 @@ Next Step: Your "Action Center" is now a powerhouse of data portability. Would y
 3.9 in18
 4. Auto Header pick and display JSON(OPTION TO: Column can be add config) as DataTable  Imp - TAG-CASE#2
 5. Pass style from calling  place (Page) - Imp - TAG-CASE#3
-6. Server-Side Pagination - Imp - TAG-CASE#4
-7. Server-Side Pagination with display with condition(Date(B/w 2 date or id = b/w 2 or stats string/end)) to pick data from JSON data, (accessKey and condition)
+5.A: DataTableV6: Auto Create Header and Load Data(Direct Pass JSON)  - Resizable Coloumn Width, Fetch from URL, Upload JSON ect Features - TAG-CASE#4
+6. Server-Side Pagination - Imp - TAG-CASE#5 - DONE
+7. Server-Side Pagination with display with condition(Date(B/w 2 date or id = b/w 2 or stats string/end)) to pick data from JSON data, (accessKey and condition) - NOTNOW
 ******************************************************************************************
 NOTE: 
 
@@ -432,38 +433,51 @@ DataTableV2: Auto Create Header and Load Data(Direct Pass JSON) - Resizable Colo
 DataTableV3: Auto Create Header and Auto Load Data(Direct Pass JSON)
 DataTableV4: NO AUTO LOAD - Conditions -  Specific to JSON & DataTable tightly COUPLED ( Note: Removed Resizable Coloumn Width feature)
 DataTableV5: NO AUTO LOAD - V4 + Add  'CLOSE Filter Button' Specific to JSON & DataTable tightly COUPLED  - ( Note: Removed Resizable Coloumn Width feature)
-/** DataTableV6: Auto Create Header and Load Data(Direct Pass JSON)  - Resizable Coloumn Width, Fetch from URL, Upload JSON ect Features
+/** DataTableV6: Auto Create Header and Load Data(Direct Pass JSON)  - Resizable Coloumn Width, Fetch from URL, Upload JSON ect Features -  - TAG-CASE#4
+
+DataTableV7: Define and Confing ALL Columns  - Pagination on Server side [PAGINATION -TAG-CASE#5]
 
 
+******************************************************************************************
+******************************************************************************************
+C:\SOORYA\personal\practice\ui\Mar24th2026\enterprise-portal\src\components\ui\DataTableV7\DataTable.tsx
 
+1. Current Code: src\components\ui\DataTableV7\DataTable.tsx
+2. Current Code: src\components\ui\DataTableV7\DataTable.scss
+3. Current Code: src\app\(dashboard)\registry-v7\page.tsx
 
 ******************************************************************************************
 
 
-Now would start to implement Server side Pagination DataTable name this as 'TAG-CASE#4'.
+Now I would start to implement Server side Pagination on DataTable. keep Tag/name this task work as 'TAG-CASE#5'.
 
 Imp Note:
 
-NOTE#250326P0129: This continuation of 'TAG-CASE#1' , but from 'TAG-CASE#2' code remove resizableColumn features and continue with 'TAG-CASE#3' features now onwards.
+NOTE#260326A1107: The base build for this is the replication of 'TAG-CASE#1', and continue tag as 'TAG-CASE#5' and add features now onwards.
 
-I would prefer to put few condition as below
-
-TASK#250326P0129.1: Remove resizableColumn features from 'TAG-CASE#2' code and continue with 'TAG-CASE#3' features
-
-TASK#250326P0129.2: I wanted to pass some conditions to load data to DataTable.
-
-Example: im my JSON result i have id(Number), name(TEXT), doj(DATE), ImagePath(String), status(Boolean) etc accessorKey.
-
-Condition#1: id>5 && id << 25 AND/OR name.contaians with 'kevin' AND/OR status=='true' . doj > '2025-01-01' AND '2026-01-01'. Here 'id' is always accessorKey.
-
-
+I would prefer to Implement Server side Pagination with high standard and user friendly.
 
 IMPORTANT NOTE:
+NOTE#260326A1110.1: Generate neccessery code to achieve the same requirements. Please Use whatever ways to connect backend service,follow and   get and utilize all features from the currently available Tech stacks and Implement in this applicatio. Please guide step-by-step for me as well.
 
-NOTE#250326P0146: I have removed resizableColumn features from 'TAG-CASE#2' from 2 files with contents share below , you can review and continue from there to continue add features of 'TAG-CASE#3' .
+NOTE#260326A1110.2: I have shared below 3 files path , with contents, you can review and continue from there to continue and add features for 'TAG-CASE#5'
+
+NOTE#260326A1110.3: Please don't compromise in any way in stadard, best practice, Rich UI, Responsive, Highend tools, libraries, stack etc. Look this as Production Grade and High standard, High scalable implemention looking from you.
 
 
-******************************************************************************************
+
+1. Current Code: src\components\ui\DataTableV7\DataTable.tsx :: 
+
+
+2. Current Code: src\components\ui\DataTableV7\DataTable.scss :: 
+
+
+3. Current Code: src\app\(dashboard)\registry-v7\page.tsx :: 
+
+
+ 
+***********************************************************
+kubectl
 ******************************************************************************************
 ******************************************************************************************
 ******************************************************************************************

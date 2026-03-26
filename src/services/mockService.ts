@@ -1,15 +1,16 @@
 export interface UserData {
-  id: string;
+  id: string | number; // Support both for safety
   name: string;
   email: string;
-  role: 'Admin' | 'User' | 'Manager';
-  status: 'Active' | 'Inactive' | 'Pending';
+  role: "Admin" | "User" | "Manager" | "Editor"; 
+  status: "Active" | "Inactive" | "Pending";
   createdAt: string;
 }
 
 export const fetchMockDataError = async (): Promise<UserData[]> => {
-        () =>  fetchMockData3;
-}
+  // To test your ErrorBoundary, this should actually throw
+  throw new Error("TAG-CASE#5: Simulated Database Connection Failure");
+};
 
 
 export const fetchMockData1 = async (): Promise<UserData[]> => {//1
@@ -28,7 +29,7 @@ export const fetchMockData1 = async (): Promise<UserData[]> => {//1
 };
 
 
-export const fetchMockData = async (): Promise<UserData[]> => {//2
+export const fetchMockData = async (): Promise<UserData[]> => {
   return new Promise((resolve) => {
     setTimeout(() => {
       const baseData: UserData[] = [
@@ -38,18 +39,18 @@ export const fetchMockData = async (): Promise<UserData[]> => {//2
         { id: '4', name: 'Rachel Zane', email: 'rachel@company.com', role: 'User', status: 'Pending', createdAt: '2023-05-20' },
       ];
 
-      const roles = ['Admin', 'User', 'Manager'];
-      const statuses = ['Active', 'Inactive', 'Pending'];
+      // FIX: Add 'as const' to lock these types
+      const roles = ['Admin', 'User', 'Manager'] as const;
+      const statuses = ['Active', 'Inactive', 'Pending'] as const;
 
       const generatedData: UserData[] = Array.from({ length: 101 }, (_, i) => {
         const id = i + 5;
-
         return {
           id: String(id),
           name: `User ${id}`,
           email: `user${id}@company.com`,
-          role: roles[i % roles.length],
-          status: statuses[i % statuses.length],
+          role: roles[i % roles.length], // Now TypeScript knows this is a valid Role
+          status: statuses[i % statuses.length], // Now TypeScript knows this is a valid Status
           createdAt: `2023-${String((i % 12) + 1).padStart(2, '0')}-${String((i % 28) + 1).padStart(2, '0')}`,
         };
       });
@@ -71,12 +72,12 @@ export const fetchMockData3 = async (): Promise<UserData[]> => {
 };
 
 const generateUsers = (count: number): UserData[] => {
-  const roles = ['Admin', 'User', 'Manager'];
-  const statuses = ['Active', 'Inactive', 'Pending'];
+  // FIX: Add 'as const' here as well
+  const roles = ['Admin', 'User', 'Manager'] as const;
+  const statuses = ['Active', 'Inactive', 'Pending'] as const;
 
   return Array.from({ length: count }, (_, i) => {
     const id = i + 1;
-
     return {
       id: String(id),
       name: id === 1 ? 'John Doe'
@@ -93,5 +94,3 @@ const generateUsers = (count: number): UserData[] => {
     };
   });
 };
-
-
