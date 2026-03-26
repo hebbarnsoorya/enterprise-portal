@@ -1,4 +1,4 @@
-AI : Kiro , WindSurf
+AI : AWS Kiro(Design, Jira, Documantaion???) , WindSurf(Coding), Cursor
 ***********************************************
 Use React, TailwindCDD, .SCSS, NextJS, Typesript etc, and High quality/Standard/Reusability components/Best Practices.
 
