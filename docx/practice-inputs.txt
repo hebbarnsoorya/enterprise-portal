@@ -1,3 +1,5 @@
+AI : Kiro , WindSurf
+***********************************************
 Use React, TailwindCDD, .SCSS, NextJS, Typesript etc, and High quality/Standard/Reusability components/Best Practices.
 
 Develop as Senior Architect, Generate Family tree , Use a card(Small in size and don't use real photo, instead use default image or no image) to each member to show , his/her Stapsize photo, Name,DOB, Mobile, Address on the same.
