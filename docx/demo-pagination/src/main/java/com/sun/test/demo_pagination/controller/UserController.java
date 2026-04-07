@@ -1,6 +1,8 @@
 package com.sun.test.demo_pagination.controller;
 import com.sun.test.demo_pagination.model.User;
+import com.sun.test.demo_pagination.model.dto.MemberDTO;
 import com.sun.test.demo_pagination.repository.UserRepository;
+import com.sun.test.demo_pagination.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,6 +27,16 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+
+    @Autowired
+    private UserService userService;
+
+    @PostMapping(value = "/member")
+    public ResponseEntity<MemberDTO> saveMember(@RequestBody MemberDTO request) {
+        MemberDTO dto = userService.memberSynch(request);
+
+        return new ResponseEntity<>(dto, HttpStatus.CREATED);
+    }
 
     @PostMapping
     public ResponseEntity<User> saveUser(@RequestBody User user) {

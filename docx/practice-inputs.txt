@@ -34,12 +34,13 @@ family:{
 parenting:{
 	id
 	pCode(Unique, Auto, NOT NULL)
-	groom(mCode)//Both NOT NULL ; Any one might have null
-	bride(mCode)//Both NOT NULL ; Any one might have null
-	isAlive(Default 1)
+	firstParent(mCode)//Both NOT NULL ; Any one might have null // groom
+	secondParent(mCode)//Both NOT NULL ; Any one might have null // bride
+	status(ACTIVE, )
 	start
 	end
-	iSPublicized(Default 1)
+	isReleationPublicized(Default 1)
+	isNatural
 	comments
 }
 
@@ -478,6 +479,183 @@ NOTE#260326A1110.3: Please don't compromise in any way in stadard, best practice
 
 
  
+***********************************************************
+***********************************************************
+
+family:{
+	id
+	fCode(Unique, Auto, NOT NULL)
+	name(NOT NULL)
+	ancestor
+	history
+}
+
+parenting:{
+	id
+	pCode(Unique, Auto, NOT NULL)
+	firstParent(mCode)//Both NOT NULL ; Any one might have null // groom
+	secondParent(mCode)//Both NOT NULL ; Any one might have null // bride
+	status(ACTIVE, )
+	start
+	end
+	isReleationPublicized(Default 1)
+	isNatural
+	comments
+}
+
+Member:{
+	id
+	memberCode(Unique, Auto, NOT NULL)
+	(pCode)
+	(fCode)
+	firstName(NOT NULL, ONLY CHAR, NO Whitespace )
+	lastName
+	mobile
+	email
+	dob
+	birthOrder
+	gender(NOT NULL)
+	about
+}
+
+
+***********************************************************
+{
+"referee":"memberCode" 
+"parenting":{<parenting Object>},
+"family":{<family Object>},
+"childrens":[
+{ <member Object -1 >} 
+{ <member Object -2 >} 
+{ <member Object -3 >} 
+{ <member Object -4 >} 
+{ <member Object -5 >} 
+],
+
+}
+***********************************************************
+<Member>:::
+{
+	
+	"familyCode":"",
+	"parentsCode":"",
+	//"parentingCode":"",
+	
+	"memberCode":"",
+	"name":"",
+	"mobile":"",
+	"gender":"",
+	"bOrder":"",
+	"family":{
+			"familyCode":"",
+			"name":"",
+			"ancestor":"",
+
+		},
+	"parents":{
+			"parentsCode":"",
+			"status":"",
+			"start":"",
+			"end":"",
+			"firstParents":{<Member>},
+			"secondParents":{<Member>},
+			"isReleationPublicized":"",
+			"isNatural":"",
+			"childrens":[
+			 {<Member>},
+			 {<Member>}
+			]
+		}
+	"parenting":{
+			"parentsCode":"",
+			"status":"",
+			"start":"",
+			"end":"",
+			"firstParents":{<Member>},
+			"secondParents":{<Member>},
+			"isReleationPublicized":"",
+			"isNatural":"",
+			"childrens":[
+			 {<Member>},
+			 {<Member>}
+			]
+	
+		}
+	
+***********************************************************
+MemberDTO{
+
+familyCode;
+parentsCode;
+parentingCode;
+
+	memberCode;
+	name;
+	dob;
+	mobile; 
+	gender;
+	bOrder;
+
+	FamilyDTO family;
+	ParentsDTO parents;
+	ParentsDTO parenting;
+
+}
+
+ParentsDTO{
+parentsCode
+status
+start
+end
+firstParents
+secondParents
+isReleationPublicized
+isNatural
+
+childrens;
+
+
+
+}
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
+***********************************************************
 ***********************************************************
 kubectl
 ******************************************************************************************
