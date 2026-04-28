@@ -65,8 +65,13 @@ export const documentService = {
    */
   fetchDocuments: async (): Promise<DocumentData[]> => {
     try {
-      const response = await axios.get<DocumentData[]>(`${API_DOCS_BASE_URL}/list`);
-      return response.data;
+      //const response = await axios.get<DocumentData[]>(`${API_DOCS_BASE_URL}/list`);
+      //return response.data;
+      return [
+        { id: 1, fileName: 'auditing.docx', status: 'TAG-CASE#1', lastModified: new Date().toISOString() },
+        { id: 2, fileName: 'productmanagement.docx', status: 'Pending', lastModified: new Date().toISOString() },
+        { id: 3, fileName: 'taxcollections.docx', status: 'Draft', lastModified: new Date().toISOString() },
+      ];
     } catch (error) {
       console.error("Error fetching document list:", error);
       // NOTE#280426P0129: Fallback to mock data if API is unreachable

@@ -9,7 +9,7 @@ interface Props {
   onClose: () => void;
 }
 
-export function DocumentViewerModal({ filename, isOpen, onClose }: Props) {
+export function DocumentViewerModalGDOCS({ filename, isOpen, onClose }: Props) {
   const [isLoading, setIsLoading] = useState(true);
 
   // The static URL provided for the GDoc

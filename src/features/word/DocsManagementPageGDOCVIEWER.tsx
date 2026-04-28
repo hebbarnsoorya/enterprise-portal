@@ -8,9 +8,8 @@ import { DocumentViewerModal } from '@/components/ui/Docs/DocumentViewerModal'; 
 import { documentService, DocumentData } from '@/services/api.service';
 import { Edit, Trash, Eye, CheckCircle, Clock, Plus, FileText } from 'lucide-react';
 import dayjs from 'dayjs';
-import { DocumentViewerModalV0 } from '@/components/ui/Docs/DocumentViewerModalV0';
 
-export default function DocsManagementPage() {
+export default function DocsManagementPageGDOCVIEWER() {
   const [data, setData] = useState<DocumentData[]>([]);
   const [loading, setLoading] = useState(true);
   
@@ -164,7 +163,7 @@ export default function DocsManagementPage() {
       />
 
       {/* Centered Modal for Editing .docx via API */}
-      <DocumentViewerModalV0 
+      <DocumentViewerModal 
         filename={editDocName} 
         isOpen={isEditModalOpen} 
         onClose={() => setIsEditModalOpen(false)} 
