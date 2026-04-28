@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Users, Settings, ChevronLeft, LogOut } from 'lucide-react';
+import { LayoutDashboard, Users, Settings, ChevronLeft, LogOut, BookAIcon } from 'lucide-react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 
@@ -15,6 +15,7 @@ export const Sidebar = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (v:
   const menuItems = [
     { name: 'Dashboard', href: '/', icon: LayoutDashboard },
     { name: 'User Management4', href: '/users', icon: Users },
+     { name: 'Document Management', href: '/docs', icon: BookAIcon },
     { name: 'Settings', href: '/settings', icon: Settings },
   ];
 const handleLogout = () => {
