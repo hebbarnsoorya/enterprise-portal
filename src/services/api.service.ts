@@ -138,7 +138,20 @@ export const documentService = {
       console.error(`Error deleting file: ${filename}`, error);
       throw error;
     }
-  }
+  },
+
+  // Add to documentService in @/services/api.service.ts
+fetchDocumentAsHtml: async (filename: string) => {
+  const response = await axios.get(`${API_DOCS_BASE_URL}/export-html/${filename}`);
+  return response.data; // { html: "..." }
+},
+
+saveHtmlAsDocx: async (html: string, filename: string) => {
+  return axios.post(`${API_DOCS_BASE_URL}/import-html`, {
+    html: html,
+    filename: filename
+  });
+}
 };
 
 

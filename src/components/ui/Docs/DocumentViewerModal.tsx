@@ -14,7 +14,9 @@ export function DocumentViewerModal({ filename, isOpen, onClose }: Props) {
 
   // The static URL provided for the GDoc
   // In a dynamic system, this would come from your documentService via Google Drive API
-  const googleDocUrl = "https://docs.google.com/document/d/1Loch7R_NO3OPIXZkibYkjfzP_Q80CQYLBmm-Cg8D_Sw/edit?usp=embed";
+ // const googleDocUrl = "https://docs.google.com/document/d/1Loch7R_NO3OPIXZkibYkjfzP_Q80CQYLBmm-Cg8D_Sw/edit?usp=embed";
+//
+  const googleDocUrl = "https://docs.google.com/document/d/1TQt7wopE2_ndORxkDVedae5XVfCpEe9s/edit?usp=drive_link&ouid=107549260534815927505&rtpof=true&sd=true";
 
   useEffect(() => {
     if (isOpen) {

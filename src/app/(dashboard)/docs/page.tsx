@@ -1,5 +1,6 @@
 import  DocsManagementPage  from '@/features/word/DocsManagementPage';
 import DocsManagementPageGDOCVIEWER from '@/features/word/DocsManagementPageGDOCVIEWER';
+import DocsManagementPageGDOCVIEWERDocx from '@/features/word/DocsManagementPageGDOCVIEWERDocx';
 import  DocsManagementPageWithEditPopup  from '@/features/word/DocsManagementPageWithEditPopup';
 
 export default function Page() {
@@ -23,6 +24,13 @@ export default function Page() {
         <h1 className="text-2xl font-bold text-slate-800">Document Management Page - GOOGLE DOCUMENT VIEWER </h1>
       </header>
       <DocsManagementPageGDOCVIEWER />
+
+        <header>
+        <h1 className="text-2xl font-bold text-slate-800">Document Management Page - GOOGLE .DOCX VIEWER (Error- TO BE FIXED) </h1>
+      </header>
+      <DocsManagementPageGDOCVIEWERDocx />
+
+      
     </div>
   );
 }
