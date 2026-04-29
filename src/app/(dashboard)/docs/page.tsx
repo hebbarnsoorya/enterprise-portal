@@ -1,4 +1,5 @@
 import  DocsManagementPage  from '@/features/word/DocsManagementPage';
+import DocsManagementPageFromServerDocx from '@/features/word/DocsManagementPageFromServerDocx';
 import DocsManagementPageGDOCVIEWER from '@/features/word/DocsManagementPageGDOCVIEWER';
 import DocsManagementPageGDOCVIEWERDocx from '@/features/word/DocsManagementPageGDOCVIEWERDocx';
 import DocsManagementPageHTMLEditor from '@/features/word/DocsManagementPageHTMLEditor';
@@ -8,6 +9,10 @@ export default function Page() {
   return (
     <div className="space-y-4">
     
+        <header>
+        <h1 className="text-2xl font-bold text-slate-800">Document Management Page - READ Server DOCX </h1>
+      </header>
+      <DocsManagementPageFromServerDocx/>
 
       <header>
         <h1 className="text-2xl font-bold text-slate-800">Document Management Page  - WITH EDIT POPUP </h1>

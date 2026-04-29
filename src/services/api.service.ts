@@ -90,7 +90,7 @@ export const documentService = {
    * Matches TASK#290426A1157.3
    */
   saveHtmlContent: async (id: number, html: string, status: string): Promise<void> => {
-    const response = await api.put(`/documents/${id}/content`, {
+    const response = await api.put(`/docs/${id}/content`, {
       html: html,
       status: status 
     });
@@ -104,7 +104,7 @@ export const documentService = {
    * 3. EXPORT HTML: Retrieve stored HTML for a specific filename
    */
   fetchDocumentAsHtml: async (filename: string): Promise<string> => {
-    const response = await api.get(`/documents/export-html/${filename}`);
+    const response = await api.get(`/docs/export-html/${filename}`);
     return response.data.html;
   },
 
@@ -112,7 +112,7 @@ export const documentService = {
    * 4. IMPORT HTML: Convert HTML back to .docx and save
    */
   saveHtmlAsDocx: async (html: string, filename: string): Promise<any> => {
-    return await api.post(`/documents/import-html`, {
+    return await api.post(`/docs/import-html`, {
       html: html,
       filename: filename
     });
@@ -122,12 +122,26 @@ export const documentService = {
    * 5. BINARY DOWNLOAD: Get .docx file for external editing
    * Matches TASK#290426A1157.4
    */
+  /* 
   fetchDocumentContent: async (filename: string): Promise<Blob> => {
-    const response = await api.get(`/documents/download/${filename}`, { 
+    const response = await api.get(`/docs/download/${filename}`, { 
       responseType: 'blob' 
     });
     return response.data;
   },
+  */
+async fetchDocumentContent(filename: string): Promise<Blob> {
+    const response = await axios.get(`http://localhost:8080/api/v1/docs/download/${filename}`, {
+        responseType: 'blob', // CRITICAL: This prevents Axios from parsing binary as text
+    // Optional: Ensure headers are set for binary
+        headers: {
+          'Accept': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/octet-stream'
+        }
+      });
+    
+    return response.data;
+},
+
 
   /**
    * 6. BINARY UPLOAD: Upload .docx file after external editing
