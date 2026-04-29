@@ -1,97 +1,159 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { X, Loader2, ExternalLink, ShieldCheck } from 'lucide-react';
+import { X, ShieldCheck, Save, Loader2, Bold, Italic, List, Heading2 } from 'lucide-react';
+import { useEditor, EditorContent } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import { DocumentData, documentService } from '@/services/api.service';
 
 interface Props {
-  filename: string | null;
+  document: DocumentData | null;
   isOpen: boolean;
   onClose: () => void;
 }
 
-export function SimpleHtmlEditorModal({ filename, isOpen, onClose }: Props) {
-  const [isLoading, setIsLoading] = useState(true);
+export function SimpleHtmlEditorModal({ document, isOpen, onClose }: Props) {
+  const [isSaving, setIsSaving] = useState(false);
+  const [status, setStatus] = useState<string>('');
 
-  // The static URL provided for the GDoc
-  // In a dynamic system, this would come from your documentService via Google Drive API
- // const googleDocUrl = "https://docs.google.com/document/d/1Loch7R_NO3OPIXZkibYkjfzP_Q80CQYLBmm-Cg8D_Sw/edit?usp=embed";
-//
-  const googleDocUrl = "https://docs.google.com/document/d/1TQt7wopE2_ndORxkDVedae5XVfCpEe9s/edit?usp=drive_link&ouid=107549260534815927505&rtpof=true&sd=true";
-
-  useEffect(() => {
-    if (isOpen) {
-      setIsLoading(true);
+const editor = useEditor({
+  extensions: [StarterKit],
+  content: '',
+  // FIX: This prevents the SSR mismatch error
+  immediatelyRender: false, 
+  editorProps: {
+    attributes: {
+      class: 'focus:outline-none min-h-[500px]',
+    },
+  },
+  onUpdate: ({ editor }) => {
+    if (status === 'CREATED' || status === 'INITIATED') {
+      setStatus('PROGRESS');
     }
-  }, [isOpen]);
+  },
+});
 
-  if (!isOpen) return null;
+// 1. Add this state
+const [mounted, setMounted] = useState(false);
+
+useEffect(() => {
+  setMounted(true);
+}, []);
+
+// 2. Wrap your EditorContent in the return statement
+{mounted && <EditorContent editor={editor} />}
+
+
+
+  // Load content when modal opens
+  useEffect(() => {
+    if (isOpen && document && editor) {
+      editor.commands.setContent(document.htmlContent || '<p>Enter technical specifications here...</p>');
+      setStatus(document.status);
+    }
+  }, [isOpen, document, editor]);
+
+  const handleSave = async () => {
+    if (!document || !editor) return;
+    setIsSaving(true);
+    try {
+      const html = editor.getHTML();
+      // Service call to Spring Boot
+      await documentService.saveHtmlContent(document.id, html, status);
+      alert(`TAG-CASE#1: Document saved in ${status} status.`);
+      onClose();
+    } catch (err) {
+      console.error("Save Error:", err);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  if (!isOpen || !document) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md">
-      <div className="bg-white w-[95vw] h-[95vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in duration-300 border border-slate-300">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm">
+      <div className="bg-white w-[94vw] h-[92vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in zoom-in duration-300">
         
-        {/* Header: Senior Architect Branding & Actions */}
-        <header className="px-6 py-3 border-b flex justify-between items-center bg-white">
+        {/* Header Section */}
+        <header className="px-6 py-4 border-b flex justify-between items-center bg-slate-50/50">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-blue-600 rounded-lg shadow-md shadow-blue-200">
+            <div className="p-2 bg-blue-600 rounded-lg shadow-md">
               <ShieldCheck size={20} className="text-white" />
             </div>
             <div>
-              <h2 className="font-bold text-slate-800 text-lg leading-tight flex items-center gap-2">
-                {filename}
-                <span className="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded border border-slate-200">LIVE EDITOR</span>
+              <h2 className="font-bold text-slate-800 tracking-tight flex items-center gap-3">
+                {document.fileName}
+                <span className="text-[10px] py-0.5 px-2 bg-blue-100 text-blue-700 rounded-full ring-1 ring-blue-600/20">
+                  {status}
+                </span>
               </h2>
-              <p className="text-[10px] text-emerald-600 font-bold uppercase tracking-widest flex items-center gap-1">
-                <span className="h-1.5 w-1.5 bg-emerald-500 rounded-full animate-pulse" />
-                Auto-saving to Cloud
-              </p>
+              <p className="text-[10px] text-slate-400 font-medium uppercase tracking-tighter">Enterprise Spec Management</p>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
-            <a 
-              href={googleDocUrl.replace('?usp=embed', '')} 
-              target="_blank" 
-              rel="noreferrer"
-              className="flex items-center gap-2 px-3 py-1.5 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-all text-xs font-semibold"
-            >
-              <ExternalLink size={14} />
-              Open in New Tab
-            </a>
-            <div className="w-px h-6 bg-slate-200 mx-2" />
             <button 
-              onClick={onClose} 
-              className="p-2 hover:bg-rose-50 hover:text-rose-500 rounded-full transition-all text-slate-400"
+              onClick={handleSave}
+              disabled={isSaving}
+              className="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-all shadow-lg shadow-emerald-500/20 disabled:opacity-50"
             >
-              <X size={22} />
+              {isSaving ? <Loader2 className="animate-spin" size={14}/> : <Save size={14}/>}
+              SYNC CHANGES
+            </button>
+            <div className="w-px h-6 bg-slate-200 mx-2" />
+            <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-full text-slate-400 transition-colors">
+              <X size={20} />
             </button>
           </div>
         </header>
-        
-        {/* Iframe Body: Google Native Workspace */}
-        <div className="flex-1 bg-slate-100 relative group">
-          {isLoading && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-50 z-10">
-              <Loader2 className="animate-spin text-blue-600 mb-4" size={48} />
-              <p className="text-slate-600 font-bold uppercase tracking-widest text-xs">Initializing Google Workspace...</p>
-            </div>
-          )}
+
+        {/* Editor Main Area */}
+        <div className="flex-1 flex flex-col overflow-hidden bg-slate-50/30">
           
-          <iframe
-            src={googleDocUrl}
-            className="w-full h-full border-none"
-            onLoad={() => setIsLoading(false)}
-            allow="autoplay"
-            title="Google Doc Editor"
-          />
+          {/* Native Toolbar */}
+          <div className="px-4 py-2 border-b bg-white flex items-center gap-2">
+            <ToolbarButton 
+              onClick={() => editor?.chain().focus().toggleBold().run()} 
+              isActive={editor?.isActive('bold')} 
+              icon={<Bold size={16} />} 
+            />
+            <ToolbarButton 
+              onClick={() => editor?.chain().focus().toggleHeading({ level: 2 }).run()} 
+              isActive={editor?.isActive('heading', { level: 2 })} 
+              icon={<Heading2 size={16} />} 
+            />
+            <ToolbarButton 
+              onClick={() => editor?.chain().focus().toggleBulletList().run()} 
+              isActive={editor?.isActive('bulletList')} 
+              icon={<List size={16} />} 
+            />
+          </div>
+
+          {/* Scrollable Document Canvas */}
+          <div className="flex-1 overflow-y-auto p-10 flex justify-center">
+            <div className="w-full max-w-4xl bg-white min-h-full shadow-2xl shadow-slate-200/50 border border-slate-200 p-16 prose prose-slate max-w-none">
+              <EditorContent editor={editor} />
+            </div>
+          </div>
         </div>
 
-        {/* Footer Info */}
-        <footer className="px-6 py-2 bg-slate-50 border-t flex justify-between items-center text-[11px] text-slate-400 font-medium">
-          <p>Powered by Google Drive API • Enterprise Content Management</p>
-          <p>Changes are captured in real-time under your Google Identity</p>
+        {/* Status Bar */}
+        <footer className="px-6 py-2 border-t bg-white flex justify-between items-center text-[11px] text-slate-400 font-bold uppercase">
+          <p>Task System: 290426A1157.4 Implementation</p>
+          <p className="text-emerald-600">● Live Preview Active</p>
         </footer>
       </div>
     </div>
   );
 }
+
+// Small Helper Component for Toolbar
+const ToolbarButton = ({ onClick, isActive, icon }: any) => (
+  <button 
+    onClick={onClick}
+    className={`p-2 rounded transition-colors ${isActive ? 'bg-blue-100 text-blue-600 ring-1 ring-blue-600/30' : 'hover:bg-slate-100 text-slate-600'}`}
+  >
+    {icon}
+  </button>
+);

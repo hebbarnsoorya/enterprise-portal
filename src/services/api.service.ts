@@ -1,11 +1,9 @@
 import axios from 'axios';
 import { UserData } from './mockService';
 
-const API_DOCS_BASE_URL = 'http://localhost:8080/api/docs';
 /**
  * TAG-CASE#5: Axios Instance Configuration
- * We centralize the base URL and headers here to avoid repeating
- * them in every individual service call.
+ * This is the primary gateway to your Spring Boot v1 Backend.
  */
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api/v1',
@@ -15,145 +13,148 @@ const api = axios.create({
 });
 
 /**
- * TAG-CASE#5: Fetch Users
- * @param params Spring Boot Pageable parameters
- * @returns Spring Boot Page object: { content: [], totalElements: 100, ... }
+ * TAG-CASE#1: Document Data Interface
+ * Production-grade strict typing for the Document Lifecycle.
  */
-export const getUsers = async (params: {
-  page: number;
-  size: number;
-  sort?: string; // Format: "column,asc" or "column,desc"
-  search?: string;
-}) => {
-  // Use the 'api' instance instead of 'axios' directly
+export interface DocumentData {
+  id: number;
+  fileName: string;
+  status: 'CREATED' | 'INITIATED' | 'PROGRESS' | 'REVIEW' | 'APPROVED' | 'COMPLETED' | 'PUBLISHED';
+  htmlContent: string; 
+  lastModified?: string;
+}
+
+/** * USER MANAGEMENT SERVICES 
+ */
+export const getUsers = async (params: { page: number; size: number; sort?: string; search?: string; }) => {
   const response = await api.get('/users', { params });
   return response.data; 
 };
 
 export const getUserById = async (id: number) => {
-  const response = await api.get<UserData>(`/users/${id}`);
-  return response;
+  return await api.get<UserData>(`/users/${id}`);
 };
 
-
-/**
- * TAG-CASE#5: Create a new user in the DB
- * This sends a POST request to the Spring Boot /users endpoint.
- */
 export const createUser = async (userData: Partial<UserData>) => {
-  // Fixed: Now 'api' is correctly defined above
   const response = await api.post('/users', userData);
   return response.data;
 };
 
-
-
 /**
- * TAG-CASE#1: Document Data Interface
+ * DOCUMENT MANAGEMENT SERVICES (TASK#290426A1157)
  */
-export interface DocumentData {
-  id: number;
-  fileName: string;
-  status: string;
-  lastModified: string;
-}
-
 export const documentService = {
+  
   /**
    * 1. LIST: Fetch metadata for the DataTable
-   * Maps to your Spring Boot list endpoint
+   * INTEGRATION: Maps to @GetMapping("/documents")
    */
   fetchDocuments: async (): Promise<DocumentData[]> => {
     try {
-      //const response = await axios.get<DocumentData[]>(`${API_DOCS_BASE_URL}/list`);
-      //return response.data;
+      // Integration: const response = await api.get<DocumentData[]>('/documents');
+      // return response.data;
+
+      // Mock Data adjusted for Lifecycle Testing
       return [
-        { id: 1, fileName: 'auditing.docx', status: 'TAG-CASE#1', lastModified: new Date().toISOString() },
-        { id: 2, fileName: 'productmanagement.docx', status: 'Pending', lastModified: new Date().toISOString() },
-        { id: 3, fileName: 'taxcollections.docx', status: 'Draft', lastModified: new Date().toISOString() },
+        { 
+          id: 1, 
+          fileName: 'Technical-Spec-Alpha.docx', 
+          status: 'PROGRESS', 
+          htmlContent: '<h2>Technical Specification</h2><p>Initial draft for Alpha project.</p>',
+          lastModified: new Date().toISOString() 
+        },
+        { 
+          id: 2, 
+          fileName: 'Product-Manual-v1.docx', 
+          status: 'CREATED', 
+          htmlContent: '', 
+          lastModified: new Date().toISOString() 
+        },
+        { 
+          id: 3, 
+          fileName: 'Product-Catalog-2026.docx', 
+          status: 'PUBLISHED', 
+          htmlContent: '<h1>Catalog 2026</h1><p>Finalized and locked content.</p>',
+          lastModified: new Date().toISOString() 
+        },
       ];
     } catch (error) {
-      console.error("Error fetching document list:", error);
-      // NOTE#280426P0129: Fallback to mock data if API is unreachable
-      return [
-        { id: 1, fileName: 'auditing.docx', status: 'TAG-CASE#1', lastModified: new Date().toISOString() },
-        { id: 2, fileName: 'productmanagement.docx', status: 'Pending', lastModified: new Date().toISOString() },
-        { id: 3, fileName: 'taxcollections.docx', status: 'Draft', lastModified: new Date().toISOString() },
-      ];
+      console.error("Error fetching documents:", error);
+      return [];
     }
   },
 
   /**
-   * 2. READ: Streams binary content from the server
-   * INTEGRATION: @GetMapping("/{filename:.+}")
-   * Critical: Uses responseType 'blob' to handle ResponseEntity<Resource>
+   * 2. SAVE CONTENT: Updates HTML and Status
+   * INTEGRATION: @PutMapping("/documents/{id}/content")
+   * Matches TASK#290426A1157.3
+   */
+  saveHtmlContent: async (id: number, html: string, status: string): Promise<void> => {
+    const response = await api.put(`/documents/${id}/content`, {
+      html: html,
+      status: status 
+    });
+
+    if (response.status !== 200) {
+      throw new Error('Failed to update document content');
+    }
+  },
+
+  /**
+   * 3. EXPORT HTML: Retrieve stored HTML for a specific filename
+   */
+  fetchDocumentAsHtml: async (filename: string): Promise<string> => {
+    const response = await api.get(`/documents/export-html/${filename}`);
+    return response.data.html;
+  },
+
+  /**
+   * 4. IMPORT HTML: Convert HTML back to .docx and save
+   */
+  saveHtmlAsDocx: async (html: string, filename: string): Promise<any> => {
+    return await api.post(`/documents/import-html`, {
+      html: html,
+      filename: filename
+    });
+  },
+
+  /**
+   * 5. BINARY DOWNLOAD: Get .docx file for external editing
+   * Matches TASK#290426A1157.4
    */
   fetchDocumentContent: async (filename: string): Promise<Blob> => {
-    try {
-      const response = await axios.get(`${API_DOCS_BASE_URL}/${filename}`, {
-        responseType: 'blob', 
-        headers: {
-          'Accept': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-        }
-      });
-      return response.data;
-    } catch (error) {
-      console.error(`Error reading file: ${filename}`, error);
-      throw error;
-    }
+    const response = await api.get(`/documents/download/${filename}`, { 
+      responseType: 'blob' 
+    });
+    return response.data;
   },
 
   /**
-   * 3. SAVE: Uploads/Updates the file on the server
-   * INTEGRATION: @PostMapping("/save")
-   * Uses FormData for MultipartFile compatibility
+   * 6. BINARY UPLOAD: Upload .docx file after external editing
+   * Matches TASK#290426A1157.4
    */
   saveDocument: async (file: Blob, filename: string): Promise<any> => {
     const formData = new FormData();
-    // Ensure 'file' key matches the @RequestParam("file") in Spring Boot
     formData.append('file', file, filename);
-    formData.append('filename', filename);
-
-    try {
-      const response = await axios.post(`${API_DOCS_BASE_URL}/save`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      return response.data;
-    } catch (error) {
-      console.error(`Error saving file: ${filename}`, error);
-      throw error;
-    }
+    const response = await api.post(`/documents/upload`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+    return response.data;
   },
 
   /**
-   * 4. DELETE: Removes file from storage
-   * INTEGRATION: @DeleteMapping("/{filename:.+}")
+   * 7. DELETE: Remove document
    */
-  deleteDocument: async (filename: string): Promise<void> => {
-    try {
-      await axios.delete(`${API_DOCS_BASE_URL}/${filename}`);
-    } catch (error) {
-      console.error(`Error deleting file: ${filename}`, error);
-      throw error;
-    }
+  deleteDocument: async (id: number): Promise<void> => {
+    await api.delete(`/documents/${id}`);
   },
 
-  // Add to documentService in @/services/api.service.ts
-fetchDocumentAsHtml: async (filename: string) => {
-  const response = await axios.get(`${API_DOCS_BASE_URL}/export-html/${filename}`);
-  return response.data; // { html: "..." }
-},
-
-saveHtmlAsDocx: async (html: string, filename: string) => {
-  return axios.post(`${API_DOCS_BASE_URL}/import-html`, {
-    html: html,
-    filename: filename
-  });
-}
+  /**
+   * ALIAS: For frontend component compatibility
+   */
+  updateDocumentContent: async (id: number, html: string, status: string): Promise<void> => {
+    return documentService.saveHtmlContent(id, html, status);
+  }
 };
 
-
-// Exporting the instance as default in case other services need it
 export default api;

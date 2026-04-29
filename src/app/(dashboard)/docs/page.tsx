@@ -1,6 +1,7 @@
 import  DocsManagementPage  from '@/features/word/DocsManagementPage';
 import DocsManagementPageGDOCVIEWER from '@/features/word/DocsManagementPageGDOCVIEWER';
 import DocsManagementPageGDOCVIEWERDocx from '@/features/word/DocsManagementPageGDOCVIEWERDocx';
+import DocsManagementPageHTMLEditor from '@/features/word/DocsManagementPageHTMLEditor';
 import  DocsManagementPageWithEditPopup  from '@/features/word/DocsManagementPageWithEditPopup';
 
 export default function Page() {
@@ -30,7 +31,10 @@ export default function Page() {
       </header>
       <DocsManagementPageGDOCVIEWERDocx />
 
-      
+         <header>
+        <h1 className="text-2xl font-bold text-slate-800">Document Management Page - HTML-EDITOR </h1>
+      </header>
+      <DocsManagementPageHTMLEditor />
     </div>
   );
 }
