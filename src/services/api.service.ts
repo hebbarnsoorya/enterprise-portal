@@ -1,17 +1,38 @@
 import axios from 'axios';
 import { UserData } from './mockService';
 
+
+
 /**
  * TAG-CASE#5: Axios Instance Configuration
  * This is the primary gateway to your Spring Boot v1 Backend.
  */
+  const baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api/v1';
+
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api/v1',
+  baseURL: baseURL,
   headers: {
     'Content-Type': 'application/json',
   },
 });
+/*
+const apiAcceptDoc = axios.create({
+  baseURL: baseURL,
+  responseType: 'blob', // CRITICAL: This prevents Axios from parsing binary as text
+  // Optional: Ensure headers are set for binary
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/octet-stream'
+  },
+});
 
+const apiAttachdDoc = axios.create({
+  baseURL: baseURL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+*/
 /**
  * TAG-CASE#1: Document Data Interface
  * Production-grade strict typing for the Document Lifecycle.
@@ -147,14 +168,18 @@ async fetchDocumentContent(filename: string): Promise<Blob> {
    * 6. BINARY UPLOAD: Upload .docx file after external editing
    * Matches TASK#290426A1157.4
    */
-  saveDocument: async (file: Blob, filename: string): Promise<any> => {
+    saveDocument: async (file: Blob, filename: string): Promise<any> => {
     const formData = new FormData();
-    formData.append('file', file, filename);
-    const response = await api.post(`/documents/upload`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' }
+    // Parameter 1: matches @RequestParam("file")
+    formData.append('file', file); 
+    // Parameter 2: matches @RequestParam("filename")
+    formData.append('filename', filename); 
+
+    const response = await api.post(`docs/savev2`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
     });
     return response.data;
-  },
+},
 
   /**
    * 7. DELETE: Remove document

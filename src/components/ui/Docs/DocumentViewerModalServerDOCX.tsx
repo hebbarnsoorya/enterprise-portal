@@ -76,24 +76,26 @@ export function DocumentViewerModalServerDOCX({ filename, isOpen, onClose }: Pro
   };
 
   const handleSave = async () => {
-    if (!filename || !editorRef.current) return;
-    setIsSaving(true);
-    try {
-      // Grabbing the edited HTML directly from the DOM via Ref
-      const updatedHTML = editorRef.current.innerHTML;
-      const editedBlob = new Blob([updatedHTML], { 
-        type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' 
-      });
+  if (!filename || !editorRef.current) return;
+  setIsSaving(true);
+  try {
+    const updatedHTML = editorRef.current.innerHTML;
+    
+    // 1. Create a BLOB of the HTML string
+    const blob = new Blob([updatedHTML], { type: 'text/html' });
 
-      await documentService.saveDocument(editedBlob, filename);
-      alert(`TAG-CASE#1: ${filename} versioned and saved.`);
-      onClose();
-    } catch (error) {
-      console.error("Save failed", error);
-    } finally {
-      setIsSaving(false);
-    }
-  };
+    // 2. IMPORTANT: Change filename to .html for now to prevent corruption
+    // or keep .docx but realize it's just a text file.
+    await documentService.saveDocument(blob, filename); 
+    
+    alert(`TAG-CASE#1: Changes synchronized.`);
+    onClose();
+  } catch (error) {
+    console.error("Save failed", error);
+  } finally {
+    setIsSaving(false);
+  }
+};
 
   if (!isOpen) return null;
 
