@@ -66,6 +66,8 @@ export const createUser = async (userData: Partial<UserData>) => {
  */
 export const documentService = {
   
+  // IMPORTANT: Update fetchDocuments to point to the new /all DB endpoint
+
   /**
    * 1. LIST: Fetch metadata for the DataTable
    * INTEGRATION: Maps to @GetMapping("/documents")
@@ -73,7 +75,7 @@ export const documentService = {
   fetchDocuments: async (): Promise<DocumentData[]> => {
     try {
       // Integration: 
-      const response = await api.get<DocumentData[]>('/docs/data');
+      const response = await api.get<DocumentData[]>('/docs/data'); //docs/all
       return response.data;
 
       // Mock Data adjusted for Lifecycle Testing
@@ -119,6 +121,19 @@ export const documentService = {
     } catch (error) {
       console.error("Error fetching documents:", error);
       return [];
+    }
+  },
+
+  createNewDocument: async (payload: { fileName: string, status: string, htmlContent: string }) => {
+    const response = await axios.post(`${baseURL}/docs/create`, payload);
+    return response.data;
+},
+
+softDelete: async (id: number): Promise<void> => {
+    try {
+      await axios.post(`${baseURL}/docs/${id}/delete`);
+    } catch (error: any) {
+      throw new Error(error.response?.data || "Failed to delete document.");
     }
   },
 

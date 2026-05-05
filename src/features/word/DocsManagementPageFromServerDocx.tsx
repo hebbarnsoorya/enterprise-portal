@@ -11,7 +11,8 @@ import dayjs from 'dayjs';
 import { DocumentViewerModalV0 } from '@/components/ui/Docs/DocumentViewerModalV0';
 import { DocumentViewerModalServerDOCX } from '@/components/ui/Docs/DocumentViewerModalServerDOCX';
 import { ManualUploadModal } from '@/components/ui/Docs/ManualUploadModal';
-
+import { CreateDocModal } from '@/components/ui/Docs/CreateDocModal';
+import { toast } from 'sonner';
 export default function DocsManagementPageFromServerDocx() {
   const [data, setData] = useState<DocumentData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -31,14 +32,20 @@ const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 // 2. Add refresh logic
 const refreshData = async () => {
   const result = await documentService.fetchDocuments();
-  setData(result);
+  // Filter out DELETED status so they disappear from the main UI
+  const activeDocs = result.filter((doc: DocumentData) => doc.status !== 'DELETED');
+  setData(activeDocs);
 };
+
+// 1. New State
+const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
       try {
         const result = await documentService.fetchDocuments();
-        setData(result);
+        const activeDocs = result.filter((doc: DocumentData) => doc.status !== 'DELETED');
+        setData(activeDocs);
       } catch (error) {
         console.error("Failed to load documents", error);
       } finally {
@@ -58,6 +65,21 @@ const refreshData = async () => {
     setIsEditModalOpen(true);
   };
 
+  const handleDelete = async (doc: DocumentData) => {
+  const confirmed = window.confirm(`Are you sure you want to delete ${doc.fileName}? This will move the file to the 'deleted' folder.`);
+  
+  if (confirmed && doc.id) {
+    try {
+      await documentService.softDelete(doc.id);
+      toast.success("Document moved to deleted folder", {
+        description: "Database record updated to DELETED status."
+      });
+      refreshData();
+    } catch (error) {
+      toast.error("Delete failed");
+    }
+  }
+};
   const columns = useMemo<ColumnDef<DocumentData>[]>(() => [
     {
       id: "select",
@@ -149,9 +171,13 @@ const refreshData = async () => {
             <Edit size={16}/>
           </button>
           
-          <button title="Delete" className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-all">
-            <Trash size={16}/>
-          </button>
+          <button 
+        title="Delete" 
+        onClick={() => handleDelete(row.original)}
+        className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-all"
+      >
+        <Trash size={16}/>
+      </button>
         </div>
       )
     }
@@ -161,13 +187,17 @@ const refreshData = async () => {
     <div className="space-y-6 animate-in fade-in duration-700">
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight uppercase">Docs Management</h1>
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight uppercase">DocXs Management</h1>
           <p className="text-slate-500 text-sm">Manage and version production-grade documents (TAG-CASE#1).</p>
         </div>
-        <button className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-bold transition-all shadow-lg shadow-blue-500/25">
-          <Plus size={18} />
-          <span>Add New Doc11</span>
-        </button>
+      {/* 2. Update the "New DocX" Button */} 
+      <button 
+        onClick={() => setIsCreateModalOpen(true)} // TASK#050526P0257.3
+        className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-bold transition-all shadow-lg shadow-blue-500/25"
+      >
+        <Plus size={18} />
+        <span>New DocX</span>
+      </button>
       </header>
 
       <div className="bg-white rounded-xl shadow-sm border border-slate-200">
@@ -206,6 +236,13 @@ const refreshData = async () => {
         onClose={() => setIsUploadModalOpen(false)}
         onUploadSuccess={refreshData}
       />
+
+      // 3. Add Component at the bottom
+        <CreateDocModal 
+          isOpen={isCreateModalOpen}
+          onClose={() => setIsCreateModalOpen(false)}
+          onSuccess={refreshData}
+        />
     </div>
   );
 }
