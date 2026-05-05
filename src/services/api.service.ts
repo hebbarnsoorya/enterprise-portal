@@ -175,7 +175,7 @@ async fetchDocumentContent(filename: string): Promise<Blob> {
     // Parameter 2: matches @RequestParam("filename")
     formData.append('filename', filename); 
 
-    const response = await api.post(`docs/savev2`, formData, {
+    const response = await api.post(`docs/save`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
     });
     return response.data;
