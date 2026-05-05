@@ -6,10 +6,11 @@ import { DataTable } from '@/components/ui/DataTable/DataTable';
 import { ProfileDrawer } from '@/components/ui/UserProfile/ProfileDrawer'; 
 import { DocumentViewerModal } from '@/components/ui/Docs/DocumentViewerModal'; // Updated naming
 import { documentService, DocumentData } from '@/services/api.service';
-import { Edit, Trash, Eye, CheckCircle, Clock, Plus, FileText } from 'lucide-react';
+import { Edit, Trash, Eye, CheckCircle, Clock, Plus, FileText, Upload } from 'lucide-react';
 import dayjs from 'dayjs';
 import { DocumentViewerModalV0 } from '@/components/ui/Docs/DocumentViewerModalV0';
 import { DocumentViewerModalServerDOCX } from '@/components/ui/Docs/DocumentViewerModalServerDOCX';
+import { ManualUploadModal } from '@/components/ui/Docs/ManualUploadModal';
 
 export default function DocsManagementPageFromServerDocx() {
   const [data, setData] = useState<DocumentData[]>([]);
@@ -21,6 +22,17 @@ export default function DocsManagementPageFromServerDocx() {
   
   const [editDocName, setEditDocName] = useState<string | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+
+  // 1. Add new state at the top
+const [uploadTarget, setUploadTarget] = useState<string | null>(null);
+const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+
+// 2. Add refresh logic
+const refreshData = async () => {
+  const result = await documentService.fetchDocuments();
+  setData(result);
+};
 
   useEffect(() => {
     const loadData = async () => {
@@ -67,16 +79,32 @@ export default function DocsManagementPageFromServerDocx() {
         />
       ),
     },
-    {
-      accessorKey: "fileName",
-      header: "Document Name",
-      cell: (info) => (
+  {
+  accessorKey: "fileName",
+  header: "Document Name",
+  cell: (info) => {
+    const fname = info.getValue() as string;
+    return (
+      <div className="flex items-center justify-between w-full group">
         <div className="flex items-center gap-2">
           <FileText size={16} className="text-blue-500" />
-          <span className="font-semibold text-slate-900">{info.getValue() as string}</span>
+          <span className="font-semibold text-slate-900">{fname}</span>
         </div>
-      ),
-    },
+        {/* TASK#050526P1239.2: Upload button inside column */}
+        <button 
+          onClick={(e) => {
+            e.stopPropagation();
+            setUploadTarget(fname);
+            setIsUploadModalOpen(true);
+          }}
+          className="opacity-0 group-hover:opacity-100 flex items-center gap-1 px-2 py-1 bg-slate-100 hover:bg-blue-600 hover:text-white text-[10px] font-bold rounded transition-all"
+        >
+          <Upload size={10}/> UPLOAD
+        </button>
+      </div>
+    );
+  },
+},
     { 
       accessorKey: "lastModified", 
       header: "Last Saved", 
@@ -169,6 +197,14 @@ export default function DocsManagementPageFromServerDocx() {
         filename={editDocName} 
         isOpen={isEditModalOpen} 
         onClose={() => setIsEditModalOpen(false)} 
+      />
+
+      // 4. Add the Modal at the bottom of the JSX
+      <ManualUploadModal 
+        filename={uploadTarget}
+        isOpen={isUploadModalOpen}
+        onClose={() => setIsUploadModalOpen(false)}
+        onUploadSuccess={refreshData}
       />
     </div>
   );

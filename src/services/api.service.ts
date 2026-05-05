@@ -98,6 +98,20 @@ export const documentService = {
           htmlContent: '<h1>Catalog 2026</h1><p>Finalized and locked content.</p>',
           lastModified: new Date().toISOString() 
         },
+         { 
+          id: 4, 
+          fileName: 'Tax-Collections-v1.docx', 
+          status: 'REVIEW', 
+          htmlContent: '<h1>Tax Collections 2026</h1><p>Intial content.</p>',
+          lastModified: new Date().toISOString() 
+        },
+         { 
+          id: 5, 
+          fileName: 'Product-Management-v1.docx', 
+          status: 'APPROVED', 
+          htmlContent: '<h1>Product Management 2026</h1><p>Finalized and locked content.</p>',
+          lastModified: new Date().toISOString() 
+        },
       ];
     } catch (error) {
       console.error("Error fetching documents:", error);
@@ -193,7 +207,29 @@ async fetchDocumentContent(filename: string): Promise<Blob> {
    */
   updateDocumentContent: async (id: number, html: string, status: string): Promise<void> => {
     return documentService.saveHtmlContent(id, html, status);
-  }
+  },
+  /**
+   * TASK#050526P1239.4: Manual Upload with Version Control
+   * Sends a raw .docx file to be replaced in the production directory 
+   * while triggering the backend's history archival logic.
+   */
+  manualUpload: async (file: File, filename: string): Promise<string> => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('filename', filename);
+
+    try {
+      const response = await axios.post(`${baseURL}/docs/manual-upload`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return response.data;
+    } catch (error: any) {
+      console.error("Manual upload failed:", error.response?.data || error.message);
+      throw new Error(error.response?.data || "Failed to synchronize manual version.");
+    }
+  },
 };
 
 export default api;
