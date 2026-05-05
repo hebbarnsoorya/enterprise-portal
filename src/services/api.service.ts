@@ -72,10 +72,12 @@ export const documentService = {
    */
   fetchDocuments: async (): Promise<DocumentData[]> => {
     try {
-      // Integration: const response = await api.get<DocumentData[]>('/documents');
-      // return response.data;
+      // Integration: 
+      const response = await api.get<DocumentData[]>('/docs/data');
+      return response.data;
 
       // Mock Data adjusted for Lifecycle Testing
+      /*
       return [
         { 
           id: 1, 
@@ -112,7 +114,8 @@ export const documentService = {
           htmlContent: '<h1>Product Management 2026</h1><p>Finalized and locked content.</p>',
           lastModified: new Date().toISOString() 
         },
-      ];
+       
+      ]; */
     } catch (error) {
       console.error("Error fetching documents:", error);
       return [];
