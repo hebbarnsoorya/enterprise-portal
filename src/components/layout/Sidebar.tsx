@@ -17,7 +17,7 @@ export const Sidebar = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (v:
     { name: 'User Management4', href: '/users', icon: Users },
      { name: 'Document Management', href: '/docs', icon: BookAIcon },
       { name: 'DOCX Management', href: '/docsx', icon: BookAIcon },
-    { name: 'Settings', href: '/settings', icon: Settings },
+    { name: 'Settings', href: '/setting', icon: Settings },
   ];
 const handleLogout = () => {
   // 1. Remove the token
