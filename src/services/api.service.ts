@@ -15,7 +15,7 @@ const api = axios.create({
     'Content-Type': 'application/json',
   },
 });
-/*
+
 const apiAcceptDoc = axios.create({
   baseURL: baseURL,
   responseType: 'blob', // CRITICAL: This prevents Axios from parsing binary as text
@@ -29,10 +29,10 @@ const apiAcceptDoc = axios.create({
 const apiAttachdDoc = axios.create({
   baseURL: baseURL,
   headers: {
-    'Content-Type': 'application/json',
+    'Content-Type': 'multipart/form-data',
   },
 });
-*/
+
 /**
  * TAG-CASE#1: Document Data Interface
  * Production-grade strict typing for the Document Lifecycle.
@@ -40,7 +40,7 @@ const apiAttachdDoc = axios.create({
 export interface DocumentData {
   id: number;
   fileName: string;
-  status: 'CREATED' | 'INITIATED' | 'PROGRESS' | 'REVIEW' | 'APPROVED' | 'COMPLETED' | 'PUBLISHED';
+  status: 'CREATED' | 'INITIATED' | 'PROGRESS' | 'REVIEW' | 'APPROVED' | 'COMPLETED' | 'PUBLISHED' | 'DELETED' | string; // Allow for future statuses
   htmlContent: string; 
   lastModified?: string;
 }
@@ -118,6 +118,7 @@ export const documentService = {
         },
        
       ]; */
+
     } catch (error) {
       console.error("Error fetching documents:", error);
       return [];
@@ -125,13 +126,13 @@ export const documentService = {
   },
 
   createNewDocument: async (payload: { fileName: string, status: string, htmlContent: string }) => {
-    const response = await axios.post(`${baseURL}/docs/create`, payload);
+    const response = await api.post(`/docs/create`, payload);
     return response.data;
 },
 
 softDelete: async (id: number): Promise<void> => {
     try {
-      await axios.post(`${baseURL}/docs/${id}/delete`);
+      await api.post(`/docs/${id}/delete`);
     } catch (error: any) {
       throw new Error(error.response?.data || "Failed to delete document.");
     }
@@ -184,14 +185,7 @@ softDelete: async (id: number): Promise<void> => {
   },
   */
 async fetchDocumentContent(filename: string): Promise<Blob> {
-    const response = await axios.get(`http://localhost:8080/api/v1/docs/download/${filename}`, {
-        responseType: 'blob', // CRITICAL: This prevents Axios from parsing binary as text
-    // Optional: Ensure headers are set for binary
-        headers: {
-          'Accept': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/octet-stream'
-        }
-      });
-    
+    const response = await apiAcceptDoc.get(`/docs/download/${filename}`);
     return response.data;
 },
 
@@ -207,9 +201,7 @@ async fetchDocumentContent(filename: string): Promise<Blob> {
     // Parameter 2: matches @RequestParam("filename")
     formData.append('filename', filename); 
 
-    const response = await api.post(`docs/save`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-    });
+    const response = await apiAttachdDoc.post(`docs/save`, formData);
     return response.data;
 },
 
@@ -237,11 +229,7 @@ async fetchDocumentContent(filename: string): Promise<Blob> {
     formData.append('filename', filename);
 
     try {
-      const response = await axios.post(`${baseURL}/docs/manual-upload`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const response = await apiAttachdDoc.post(`/docs/manual-upload`, formData);
       return response.data;
     } catch (error: any) {
       console.error("Manual upload failed:", error.response?.data || error.message);

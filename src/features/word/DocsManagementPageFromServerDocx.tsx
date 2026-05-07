@@ -229,7 +229,7 @@ const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
         onClose={() => setIsEditModalOpen(false)} 
       />
 
-      // 4. Add the Modal at the bottom of the JSX
+       {/* 4. Add the Modal at the bottom of the JSX */}
       <ManualUploadModal 
         filename={uploadTarget}
         isOpen={isUploadModalOpen}
@@ -237,7 +237,7 @@ const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
         onUploadSuccess={refreshData}
       />
 
-      // 3. Add Component at the bottom
+       {/* 3. Add Component at the bottom of the JSX */}
         <CreateDocModal 
           isOpen={isCreateModalOpen}
           onClose={() => setIsCreateModalOpen(false)}
