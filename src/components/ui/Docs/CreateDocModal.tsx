@@ -17,7 +17,7 @@ interface Props {
 export const CreateDocModal = ({ isOpen, onClose, onSuccess }: Props) => {
   const [formData, setFormData] = useState({ 
     fileName: '', 
-    status: 'DRAFT', 
+    status: 'INITIATED', 
     htmlContent: '<p>Initial Document Structure</p>' 
   });
   const [loading, setLoading] = useState(false);
@@ -151,9 +151,15 @@ const handleBlur = () => {
                 value={formData.status}
                 onChange={(e) => setFormData({...formData, status: e.target.value})}
               >
-                <option value="DRAFT">DRAFT (Local)</option>
-                <option value="PENDING">PENDING (Review)</option>
-                <option value="TAG-CASE#1">TAG-CASE#1 (Production)</option>
+                <option value="CREATED">CREATED</option>
+                <option value="INITIATED">INITIATED</option>
+                <option value="PROGRESS">PROGRESS</option>
+                <option value="REVIEW">REVIEW</option>
+                <option value="APPROVED">APPROVED</option>
+                <option value="PUBLISHED">PUBLISHED</option>
+                <option value="DRAFT">DRAFT</option>
+                <option value="PENDING">PENDING</option>
+                <option value="COMPLETED">COMPLETED</option>
               </select>
             </div>
             
