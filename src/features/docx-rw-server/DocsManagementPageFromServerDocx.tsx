@@ -7,7 +7,7 @@ import { ProfileDrawer } from '@/components/ui/UserProfile/ProfileDrawer';
 import { documentService, DocumentData } from '@/services/api.service';
 import { Edit, Trash, Eye, CheckCircle, Clock, Plus, FileText, Upload, DatabaseZap, SearchX } from 'lucide-react';
 import dayjs from 'dayjs';
-import { DocumentViewerModalServerDOCX } from '@/components/ui/Docs/DocumentViewerModalServerDOCX';
+import { DocumentViewerModalServerDOCX } from '@/components/ui/docsx/DocumentViewerModalServerDOCX';
 import { ManualUploadModal } from '@/components/ui/Docs/ManualUploadModal';
 import { CreateDocModal } from '@/components/ui/Docs/CreateDocModal';
 import { SystemFeedbackModal } from '@/components/ui/Modals/SystemFeedbackModal';

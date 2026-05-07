@@ -8,9 +8,9 @@ import { DocumentViewerModal } from '@/components/ui/Docs/DocumentViewerModal'; 
 import { documentService, DocumentData } from '@/services/api.service';
 import { Edit, Trash, Eye, CheckCircle, Clock, Plus, FileText } from 'lucide-react';
 import dayjs from 'dayjs';
-import { DocumentViewerModalCustom } from '@/components/ui/Docs/DocumentViewerModalCustom';
+import { DocumentViewerModalV0 } from '@/components/ui/Docs/DocumentViewerModalV0';
 
-export default function DocsManagementPageGDOCVIEWERDocx() {
+export default function DocsManagementPage() {
   const [data, setData] = useState<DocumentData[]>([]);
   const [loading, setLoading] = useState(true);
   
@@ -24,7 +24,7 @@ export default function DocsManagementPageGDOCVIEWERDocx() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const result = await documentService.fetchDocuments();
+        const result = await documentService.fetchMockDocuments();
         setData(result);
       } catch (error) {
         console.error("Failed to load documents", error);
@@ -114,7 +114,7 @@ export default function DocsManagementPageGDOCVIEWERDocx() {
           {/* Edit Button: Opens DocumentViewerModal (Edit Mode) */}
           <button 
             onClick={() => handleEditClick(row.original.fileName)}
-            title="Edit" 
+            title="Edit-.Docx" 
             className="p-1.5 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-md transition-all"
           >
             <Edit size={16}/>
@@ -137,7 +137,7 @@ export default function DocsManagementPageGDOCVIEWERDocx() {
         </div>
         <button className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-bold transition-all shadow-lg shadow-blue-500/25">
           <Plus size={18} />
-          <span>Add New Doc</span>
+          <span>Add New Doc11</span>
         </button>
       </header>
 
@@ -164,7 +164,7 @@ export default function DocsManagementPageGDOCVIEWERDocx() {
       />
 
       {/* Centered Modal for Editing .docx via API */}
-      <DocumentViewerModalCustom 
+      <DocumentViewerModalV0 
         filename={editDocName} 
         isOpen={isEditModalOpen} 
         onClose={() => setIsEditModalOpen(false)} 

@@ -16,7 +16,7 @@ export default function DocsManagementPageHTMLEditor() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const result = await documentService.fetchDocuments();
+        const result = await documentService.fetchMockDocuments();
         setData(result);
       } catch (error) {
         console.error("Fetch failed", error);

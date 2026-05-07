@@ -125,6 +125,57 @@ export const documentService = {
     }
   },
 
+  /**
+   * 1. LIST: Fetch Mock metadata for the DataTable
+   */
+  fetchMockDocuments: async (): Promise<DocumentData[]> => {
+    try {
+        // Mock Data adjusted for Lifecycle Testing
+      return [
+        { 
+          id: 1, 
+          fileName: 'Technical-Spec-Alpha.docx', 
+          status: 'PROGRESS', 
+          htmlContent: '<h2>Technical Specification</h2><p>Initial draft for Alpha project.</p>',
+          lastModified: new Date().toISOString() 
+        },
+        { 
+          id: 2, 
+          fileName: 'Product-Manual-v1.docx', 
+          status: 'CREATED', 
+          htmlContent: '', 
+          lastModified: new Date().toISOString() 
+        },
+        { 
+          id: 3, 
+          fileName: 'Product-Catalog-2026.docx', 
+          status: 'PUBLISHED', 
+          htmlContent: '<h1>Catalog 2026</h1><p>Finalized and locked content.</p>',
+          lastModified: new Date().toISOString() 
+        },
+         { 
+          id: 4, 
+          fileName: 'Tax-Collections-v1.docx', 
+          status: 'REVIEW', 
+          htmlContent: '<h1>Tax Collections 2026</h1><p>Intial content.</p>',
+          lastModified: new Date().toISOString() 
+        },
+         { 
+          id: 5, 
+          fileName: 'Product-Management-v1.docx', 
+          status: 'APPROVED', 
+          htmlContent: '<h1>Product Management 2026</h1><p>Finalized and locked content.</p>',
+          lastModified: new Date().toISOString() 
+        },
+       
+      ]; 
+
+    } catch (error) {
+      console.error("Error fetching documents:", error);
+      return [];
+    }
+  },
+
   createNewDocument: async (payload: { fileName: string, status: string, htmlContent: string }) => {
     const response = await api.post(`/docs/create`, payload);
     return response.data;

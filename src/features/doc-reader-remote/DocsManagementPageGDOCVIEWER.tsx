@@ -23,7 +23,7 @@ export default function DocsManagementPageGDOCVIEWER() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const result = await documentService.fetchDocuments();
+        const result = await documentService.fetchMockDocuments();
         setData(result);
       } catch (error) {
         console.error("Failed to load documents", error);
