@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Users, Settings, ChevronLeft, LogOut, BookAIcon } from 'lucide-react';
+import { LayoutDashboard, Users, Settings, ChevronLeft, LogOut, BookAIcon, UserCheck } from 'lucide-react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 
@@ -16,6 +16,7 @@ export const Sidebar = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (v:
     { name: 'Dashboard', href: '/', icon: LayoutDashboard },
     { name: 'User Management4', href: '/users', icon: Users },
      { name: 'Document Management', href: '/docs', icon: BookAIcon },
+     { name: 'Employee Registry', href: '/employees', icon: UserCheck }, // New Link Added
       { name: 'DOCX Management', href: '/docsx', icon: BookAIcon },
     { name: 'Settings', href: '/setting', icon: Settings },
   ];

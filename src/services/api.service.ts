@@ -33,6 +33,23 @@ const apiAttachdDoc = axios.create({
   },
 });
 
+/*
+
+Pro-Tip for TAG-CASE#5:
+Since you are working with an Enterprise Billing system,
+ ensure your api.service.ts also handles the Authorization Header 
+ if you have Spring Security enabled:
+
+api.interceptors.request.use((config) => {
+  const token = document.cookie.split('; ').find(row => row.startsWith('auth-token='))?.split('=')[1];
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+*/
+
 /**
  * TAG-CASE#1: Document Data Interface
  * Production-grade strict typing for the Document Lifecycle.
@@ -289,4 +306,44 @@ async fetchDocumentContent(filename: string): Promise<Blob> {
   },
 };
 
+
+/**
+ * TAG-CASE#5: Employee Service Methods
+ */
+
+export const employeeService = {
+
+      getEmployees: async (params: any) => {
+        const response = await api.get('/employees', { params });
+        return response.data;
+      },
+
+      createEmployee: async (employeeData: any) => {
+        const response = await api.post('/employees', employeeData);
+        return response.data;
+      },
+
+      getEmployeeById : async (id: number) => {
+  return await api.get(`/employees/${id}`);
+},
+      updateEmployee: async (id: number, employeeData: any) => {
+        const response = await api.put(`/employees/${id}`, employeeData);
+        return response.data;
+      },
+
+      /**
+ * TAG-CASE#5: Archive/Delete Employee
+ * Sends a DELETE request to the Spring Boot backend.
+ * @param id The unique identifier of the employee
+ */
+deleteEmployee : async (id: number): Promise<void> => {
+  try {
+    // Standard REST: DELETE http://localhost:8080/api/v1/employees/{id}
+    await api.delete(`/employees/${id}`);
+  } catch (error) {
+    console.error(`API Error: Failed to delete employee with ID ${id}`, error);
+    throw error; // Re-throw to handle error in the UI (e.g., showing a toast)
+  }
+}
+};
 export default api;
