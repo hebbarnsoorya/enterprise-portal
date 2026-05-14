@@ -272,7 +272,10 @@ export default function EmployeeRegistryPage() {
           </div>
         ) : data.length > 0 ? (
           <div className="overflow-hidden">
-            <DataTable columns={columns} data={data} />
+            <DataTable columns={columns} data={data}
+                      onRowClick={(row) => router.push(`/employees/${row.id}`)}
+
+            />
           </div>
         ) : (
           /* TASK#070526A1157.2: No Data Handle */

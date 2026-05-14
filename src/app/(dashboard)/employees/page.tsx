@@ -157,7 +157,9 @@ export default function EmployeeRegistryPage() {
             <p className="text-slate-400 text-sm font-medium">Syncing Registry...</p>
           </div>
         ) : data.length > 0 ?(
-          <DataTable columns={columns} data={data} />
+          <DataTable columns={columns} data={data}
+          onRowClick={(row) => router.push(`/employees/${row.id}`)}
+           />
         ): (
           /* TASK#070526A1157.2: No Data Handle */
           <div className="flex-1 flex flex-col justify-center items-center py-20 px-6 text-center animate-in zoom-in-95">
