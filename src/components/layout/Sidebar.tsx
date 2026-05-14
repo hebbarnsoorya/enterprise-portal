@@ -16,7 +16,8 @@ export const Sidebar = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (v:
     { name: 'Dashboard', href: '/', icon: LayoutDashboard },
     { name: 'User Management4', href: '/users', icon: Users },
      { name: 'Document Management', href: '/docs', icon: BookAIcon },
-     { name: 'Employee Registry', href: '/employees', icon: UserCheck }, // New Link Added
+     { name: 'Employee Registry', href: '/employees', icon: UserCheck }, 
+     { name: 'Employee Registry -v1', href: '/employeesv1', icon: UserCheck }, 
       { name: 'DOCX Management', href: '/docsx', icon: BookAIcon },
     { name: 'Settings', href: '/setting', icon: Settings },
   ];

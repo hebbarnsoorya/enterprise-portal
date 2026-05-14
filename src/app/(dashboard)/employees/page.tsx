@@ -132,6 +132,7 @@ export default function EmployeeRegistryPage() {
   ], [router]);
 
   return (
+    
     <div className="p-6 space-y-4">
       {/* Header Section */}
       <div className="flex justify-between items-center mb-6">
@@ -196,5 +197,6 @@ export default function EmployeeRegistryPage() {
         </AlertDialogContent>
       </AlertDialog>
     </div>
+  
   );
 }
