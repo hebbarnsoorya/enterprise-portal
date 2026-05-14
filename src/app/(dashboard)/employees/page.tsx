@@ -11,7 +11,8 @@ import {
   Phone, 
   Edit, 
   Trash, 
-  Loader2 
+  Loader2, 
+  SearchX
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
@@ -154,8 +155,19 @@ export default function EmployeeRegistryPage() {
             <Loader2 className="animate-spin text-blue-600" size={32} />
             <p className="text-slate-400 text-sm font-medium">Syncing Registry...</p>
           </div>
-        ) : (
+        ) : data.length > 0 ?(
           <DataTable columns={columns} data={data} />
+        ): (
+          /* TASK#070526A1157.2: No Data Handle */
+          <div className="flex-1 flex flex-col justify-center items-center py-20 px-6 text-center animate-in zoom-in-95">
+             <div className="bg-slate-50 p-6 rounded-full mb-4 border border-slate-100">
+                <SearchX size={48} className="text-slate-300" />
+             </div>
+             <h3 className="text-lg font-black text-slate-800 uppercase tracking-tight">No Employees Detected</h3>
+             <p className="text-slate-500 text-sm max-w-[280px] mt-2 leading-relaxed">
+                The Employee Registry is currently empty. Initialize a new onboard Staff using the button above..
+             </p>
+          </div>
         )}
       </div>
 

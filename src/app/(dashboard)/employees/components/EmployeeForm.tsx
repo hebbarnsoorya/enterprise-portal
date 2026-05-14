@@ -30,7 +30,7 @@ export default function EmployeeForm({ initialData, isEdit = false }: EmployeeFo
       yearsOfExp: 0
     }
   });
-  
+
 useEffect(() => {
   if (Object.keys(errors).length > 0) {
     console.error("ZOD VALIDATION FAILED:", errors);
@@ -109,7 +109,7 @@ useEffect(() => {
             <input 
               {...register("id", { valueAsNumber: true })} 
               type="number" 
-              //readOnly={isEdit} // IDs are typically immutable in enterprise systems
+              readOnly={isEdit} // IDs are typically immutable in enterprise systems
               className={`w-full p-2.5 bg-slate-50 border rounded-lg text-sm transition-all outline-none ${isEdit ? 'opacity-60 cursor-not-allowed' : 'focus:ring-2 focus:ring-blue-500/20'} ${errors.id ? 'border-red-500' : 'border-slate-200'}`}
               placeholder="Enter numeric ID"
             />
